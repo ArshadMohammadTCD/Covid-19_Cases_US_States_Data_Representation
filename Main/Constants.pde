@@ -1,0 +1,10 @@
+final int EVENT_NULL=0;
+final int EVENT_HEADLINE_FIGURES=1;
+final int EVENT_STATS_N_GRAPHS=2;
+final int EVENT_WORLD_MAP=3;
+final int EVENT_LIVE_UPDATES=4;
+final int EVENT_FREE_1=5;//change name if using
+final int EVENT_FREE_2=6;//change name if using
+final int EVENT_FREE_3=7;//change name if using
+final int EVENT_FREE_4=8;//change name if using
+final int EVENT_BACK_TO_HOME=9;
