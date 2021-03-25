@@ -90,8 +90,8 @@ void setup() {
   // Using a stringBuilder in order to effisciently forms strings for queries
   StringBuilder stringBuilder = new StringBuilder(16000);
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  // Zemyna    myConnection = new SQLiteConnection("insert the file path for  covid_data.db here");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   // Arshad    myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
 
   // Forming strings to delete previous table if it previously existed and creating new one if it had not existed previously
