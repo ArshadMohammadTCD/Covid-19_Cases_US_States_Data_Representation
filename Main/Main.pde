@@ -89,9 +89,9 @@ void setup() {
 
   // Using a stringBuilder in order to effisciently forms strings for queries
   StringBuilder stringBuilder = new StringBuilder(16000);
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   // Arshad    myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
 
   // Forming strings to delete previous table if it previously existed and creating new one if it had not existed previously
@@ -151,19 +151,28 @@ void setup() {
   // Sends that query to database
   myConnection.updateQuery(stringBuilder.toString());
   print("done");
+  
+  // Andrey 25/03/2021 #17:56
+  // Deleting previous and creating Index to make query's more effective
+  String deleteIndex = "DROP INDEX IF EXISTS county_id";
+  String createIndex = "CREATE INDEX IF NOT EXISTS county_id ON covidData(county);";
+   myConnection.updateQuery(deleteIndex);
+   myConnection.updateQuery(createIndex);
+   
 
   // Code with several examples of how to form queries for data, Look at sqlite tutorial site from important links for more commands and examples
-  String query = "SELECT * FROM covidData WHERE county = 'Wyoming'";
+ // String query = "SELECT * FROM covidData WHERE county = 'Wyoming'";
+  //int time1 = millis();
+  //Table testTable = myConnection.runQuery(query);
+ // int time2 = millis();
+  //printTable(testTable);
+ // System.out.println(time2-time1);
+  String query2 = "SELECT area,county,cases FROM covidData WHERE date = DATE('2021-02-20') AND area LIKE '%Virginia%'";  
+  String query = "SELECT county, SUM(cases) AS SUM, AVG(cases) AS AVG FROM covidData WHERE date = DATE('2021-02-20') GROUP BY county ORDER BY SUM DESC LIMIT 10";
+   String query3 = "SELECT * FROM covidData WHERE county = 'Wyoming'";
   int time1 = millis();
-  Table testTable = myConnection.runQuery(query);
+  myConnection.runQuery(query3);
   int time2 = millis();
-  printTable(testTable);
-  System.out.println(time2-time1);
-  // String query2 = "SELECT area,county,cases FROM covidData WHERE date = DATE('2021-02-20') AND area LIKE '%Virginia%'";  
-  query = "SELECT county, SUM(cases) AS SUM, AVG(cases) AS AVG FROM covidData WHERE date = DATE('2021-02-20') GROUP BY county ORDER BY SUM DESC LIMIT 10";   
-  time1 = millis();
-  //Table testTable2 = myConnection.runQuery(query2);
-  time2 = millis();
 
   // printTable(testTable2);
   System.out.println(time2-time1);
@@ -282,5 +291,14 @@ void drawTable(Table table) {
     stateIndex++;
   }
   recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '28/04/2020' AND county = '" + STATES[stateIndex] + "'";
+ 
+
+  
+ 
+int time1 = millis();
   recentSamples = myConnection.runQuery(recentQuery);
+int time2 = millis();
+System.out.println(time2-time1);
+  
+ 
 }
