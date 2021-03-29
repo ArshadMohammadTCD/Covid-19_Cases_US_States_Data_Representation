@@ -41,48 +41,7 @@ void setup() {
   mainFont = loadFont("ProcessingSansPro-Regular-26.vlw");
   smallFont = loadFont("ProcessingSansPro-Regular-18.vlw");
   defaultBackground = loadImage("Default Screen1.png");  
-  color buttonColor = color(83, 83, 83);
-  //home screen
-  homeScreenBackground = loadImage("Home Screen1.png");
-  homeScreen = new Screen(homeScreenBackground);
-  headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
-  statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
-  worldMap = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
-  liveUpdates = new Button(480, 525, 960, 50, "Live Updates", buttonColor, mainFont, EVENT_LIVE_UPDATES, 889);
-  unusedButton = new Button(480, 600, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
-  unusedButton2 = new Button(480, 675, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
-  unusedButton3 = new Button(480, 750, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
-  unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
-  homeScreen.addButton(headlineFigures); 
-  homeScreen.addButton(statisticsAndGraphs); 
-  homeScreen.addButton(worldMap);
-  homeScreen.addButton(liveUpdates);
-  homeScreen.addButton(unusedButton);//change if using 
-  homeScreen.addButton(unusedButton2);//change if using 
-  homeScreen.addButton(unusedButton3);//change if using
-  homeScreen.addButton(unusedButton4);//change if using
-  //Headline Figures
-  headlineFiguresScreen = new Screen(defaultBackground);
-  returnButton = new Button(50, 50, 80, 30, "← Home", buttonColor, smallFont, EVENT_BACK_TO_HOME, 60);
-  headlineFiguresScreen.addButton(returnButton);
-  //Statistics & Graphs
-  statsGraphsScreen = new Screen(defaultBackground);
-  statsGraphsScreen.addButton(returnButton);
-  //World Map Screen
-  worldMapScreen = new Screen(defaultBackground);
-  worldMapScreen.addButton(returnButton);
-  //Live Updates
-  liveUpdatesScreen = new Screen(defaultBackground);
-  liveUpdatesScreen.addButton(returnButton);
-  //extra screens
-  unused = new Screen(defaultBackground);
-  unused.addButton(returnButton);
-  unused2 = new Screen(defaultBackground);
-  unused2.addButton(returnButton);
-  unused3 = new Screen(defaultBackground);
-  unused3.addButton(returnButton);
-  unused4 = new Screen(defaultBackground);
-  unused4.addButton(returnButton);
+  setupScreens();
   currentScreen=homeScreen;
 
   //Andrey 24/03/2021  16:00
@@ -301,4 +260,51 @@ int time2 = millis();
 System.out.println(time2-time1);
   
  
+}
+
+void setupScreens() 
+{
+  //Zemyna 23/03/2021 20:15
+  color buttonColor = color(83, 83, 83);
+  //home screen
+  homeScreenBackground = loadImage("Home Screen1.png");
+  homeScreen = new Screen(homeScreenBackground);
+  headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
+  statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
+  worldMap = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
+  liveUpdates = new Button(480, 525, 960, 50, "Live Updates", buttonColor, mainFont, EVENT_LIVE_UPDATES, 889);
+  unusedButton = new Button(480, 600, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  unusedButton2 = new Button(480, 675, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  unusedButton3 = new Button(480, 750, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  homeScreen.addButton(headlineFigures); 
+  homeScreen.addButton(statisticsAndGraphs); 
+  homeScreen.addButton(worldMap);
+  homeScreen.addButton(liveUpdates);
+  homeScreen.addButton(unusedButton);//change if using 
+  homeScreen.addButton(unusedButton2);//change if using 
+  homeScreen.addButton(unusedButton3);//change if using
+  homeScreen.addButton(unusedButton4);//change if using
+  //Headline Figures
+  headlineFiguresScreen = new Screen(defaultBackground);
+  returnButton = new Button(50, 50, 80, 30, "← Home", buttonColor, smallFont, EVENT_BACK_TO_HOME, 60);
+  headlineFiguresScreen.addButton(returnButton);
+  //Statistics & Graphs
+  statsGraphsScreen = new Screen(defaultBackground);
+  statsGraphsScreen.addButton(returnButton);
+  //World Map Screen
+  worldMapScreen = new Screen(defaultBackground);
+  worldMapScreen.addButton(returnButton);
+  //Live Updates
+  liveUpdatesScreen = new Screen(defaultBackground);
+  liveUpdatesScreen.addButton(returnButton);
+  //extra screens
+  unused = new Screen(defaultBackground);
+  unused.addButton(returnButton);
+  unused2 = new Screen(defaultBackground);
+  unused2.addButton(returnButton);
+  unused3 = new Screen(defaultBackground);
+  unused3.addButton(returnButton);
+  unused4 = new Screen(defaultBackground);
+  unused4.addButton(returnButton);
 }
