@@ -29,6 +29,12 @@ String recentQuery;
 Table recentSamples;
 int counter;
 int stateIndex;
+ArrayList<Bar> theBars;
+int dateIndex;
+Button forwardCounty;
+Button backwardCounty;
+Button forwardDate;
+Button backwardDate;
 
 //Andrey 24/03/2021 16:00
 import samuelal.squelized.*;
@@ -48,8 +54,8 @@ void setup() {
 
   // Using a stringBuilder in order to effisciently forms strings for queries
   StringBuilder stringBuilder = new StringBuilder(16000);
-  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   // Arshad    myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
 
@@ -110,25 +116,25 @@ void setup() {
   // Sends that query to database
   myConnection.updateQuery(stringBuilder.toString());
   print("done");
-  
+
   // Andrey 25/03/2021 #17:56
   // Deleting previous and creating Index to make query's more effective
   String deleteIndex = "DROP INDEX IF EXISTS county_id";
   String createIndex = "CREATE INDEX IF NOT EXISTS county_id ON covidData(county);";
-   myConnection.updateQuery(deleteIndex);
-   myConnection.updateQuery(createIndex);
-   
+  myConnection.updateQuery(deleteIndex);
+  myConnection.updateQuery(createIndex);
+
 
   // Code with several examples of how to form queries for data, Look at sqlite tutorial site from important links for more commands and examples
- // String query = "SELECT * FROM covidData WHERE county = 'Wyoming'";
+  // String query = "SELECT * FROM covidData WHERE county = 'Wyoming'";
   //int time1 = millis();
   //Table testTable = myConnection.runQuery(query);
- // int time2 = millis();
+  // int time2 = millis();
   //printTable(testTable);
- // System.out.println(time2-time1);
+  // System.out.println(time2-time1);
   String query2 = "SELECT area,county,cases FROM covidData WHERE date = DATE('2021-02-20') AND area LIKE '%Virginia%'";  
   String query = "SELECT county, SUM(cases) AS SUM, AVG(cases) AS AVG FROM covidData WHERE date = DATE('2021-02-20') GROUP BY county ORDER BY SUM DESC LIMIT 10";
-   String query3 = "SELECT * FROM covidData WHERE county = 'Wyoming'";
+  String query3 = "SELECT * FROM covidData WHERE county = 'Wyoming'";
   int time1 = millis();
   myConnection.runQuery(query3);
   int time2 = millis();
@@ -140,55 +146,131 @@ void setup() {
   recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '28/04/2020' AND county = 'Alabama'";
   recentSamples = myConnection.runQuery(recentQuery);
   counter = 0;
-  stateIndex = 1;
+  stateIndex = 0;
+  dateIndex = 0;
+  theBars = new ArrayList();
 }
 
 void draw() {
   currentScreen.draw();
   // Joe 25/03/21 10:20
   if (currentScreen == statsGraphsScreen) {
-    drawTable(recentSamples);
-    counter++;
+    //drawTable(recentSamples);
+    //counter++;
+    drawChart();
   }
+  /*
   else {
-    counter = 0;
-    stateIndex = 0;
-  }
+   counter = 0;
+   stateIndex = 0;
+   }*/
 }
 
 void mousePressed() {
   //Zemyna 23/03/2021 20:15
+  //Joe 30/03/21 00:50 : Created switch statements depending on the current screen
   int event;
   event = currentScreen.getEvent();
-  switch(event)
-  {
-  case EVENT_HEADLINE_FIGURES: 
-    currentScreen=headlineFiguresScreen;
-    break;
-  case EVENT_STATS_N_GRAPHS:
-    currentScreen=statsGraphsScreen;
-    break;
-  case EVENT_WORLD_MAP:
-    currentScreen=worldMapScreen;
-    break;
-  case EVENT_LIVE_UPDATES:
-    currentScreen=liveUpdatesScreen;
-    break;
-  case EVENT_FREE_1:
-    currentScreen=unused;
-    break;
-  case EVENT_FREE_2:
-    currentScreen=unused2;
-    break;
-  case EVENT_FREE_3:
-    currentScreen=unused3;
-    break;
-  case EVENT_FREE_4:
-    currentScreen=unused4;
-    break;
-  case EVENT_BACK_TO_HOME:
-    currentScreen=homeScreen;
-    break;
+  if ( currentScreen == homeScreen ) {
+    switch(event)
+    {
+    case EVENT_HEADLINE_FIGURES: 
+      currentScreen=headlineFiguresScreen;
+      break;
+    case EVENT_STATS_N_GRAPHS:
+      currentScreen=statsGraphsScreen;
+      createChart();
+      break;
+    case EVENT_WORLD_MAP:
+      currentScreen=worldMapScreen;
+      break;
+    case EVENT_LIVE_UPDATES:
+      currentScreen=liveUpdatesScreen;
+      break;
+    case EVENT_FREE_1:
+      currentScreen=unused;
+      break;
+    case EVENT_FREE_2:
+      currentScreen=unused2;
+      break;
+    case EVENT_FREE_3:
+      currentScreen=unused3;
+      break;
+    case EVENT_FREE_4:
+      currentScreen=unused4;
+      break;
+    case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == headlineFiguresScreen ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == statsGraphsScreen ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      emptyArray(theBars);
+      stateIndex = 0;
+      break;
+      case 1:
+      emptyArray(theBars);
+      stateIndex++;
+      createChart();
+      break;
+      case 2:
+      emptyArray(theBars);
+      stateIndex--;
+      createChart();
+      break;
+    }
+  }
+  else if ( currentScreen == worldMapScreen ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == liveUpdatesScreen ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == unused ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == unused2 ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
+  }
+  else if ( currentScreen == unused3 ) {
+    switch(event)
+    {
+      case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      break;
+    }
   }
 }
 
@@ -250,16 +332,79 @@ void drawTable(Table table) {
     stateIndex++;
   }
   recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '28/04/2020' AND county = '" + STATES[stateIndex] + "'";
- 
 
-  
- 
-int time1 = millis();
+
+
+
+  int time1 = millis();
   recentSamples = myConnection.runQuery(recentQuery);
-int time2 = millis();
-System.out.println(time2-time1);
-  
- 
+  int time2 = millis();
+  System.out.println(time2-time1);
+}
+
+void createBar(float population, int xpos, float mappedWidth) {
+  // Joe 30/03/21 00:50
+  theBars.add( new Bar( population, (xpos), mappedWidth));
+}
+
+void drawBars() {
+  // Joe 30/03/21 00:50
+  for ( int i = 0; i < theBars.size(); i++ ) {
+    theBars.get(i).draw();
+  }
+}
+
+void createChart() {
+  // Joe 30/03/21 00:50
+  String caseQuery = "SELECT cases FROM covidData WHERE county = '" + STATES[stateIndex] + "' AND date = '28/04/2020'";
+  table = myConnection.runQuery(caseQuery);
+  int xpos = 50;
+  int mapRange = findMaxValue(table);
+  float mapWidth = 1720/table.getRowCount();
+  for (TableRow row : table.rows())
+  {
+    for (int i = 0; i < row.getColumnCount(); i++)
+    {
+      String caseString = row.getString(i);
+      float measureBar = map(Integer.parseInt(caseString), 0, mapRange, 0, 600);
+      createBar(measureBar, xpos, mapWidth);
+    }
+    xpos+=mapWidth;
+  }
+}
+
+void drawChart() {
+  // Joe 30/03/21 00:50
+  stroke(0);
+  fill(255);
+  rect(35, 125, 1785, 775);
+  fill(0);
+  drawBars();
+  fill(0);
+  line(50, 150, 50, 850);
+  line(50, 850, 1770, 850);
+  text(STATES[stateIndex], 490, 950);
+}
+
+int findMaxValue(Table table ) {
+  // Joe 30/03/21 00:50
+  int maxValue = 0;
+  for (TableRow row : table.rows()) {
+    for ( int i = 0; i < row.getColumnCount(); i++ ) {
+      String stringToCheck = row.getString(i);
+      if ( Integer.parseInt(stringToCheck) > maxValue ) {
+        maxValue = Integer.parseInt(stringToCheck);
+      }
+    }
+  }
+  return maxValue;
+}
+
+void emptyArray ( ArrayList<Bar> theBars ) {
+  // Joe 30/03/21 00:50
+  for ( int i = theBars.size() - 1; i >= 0; i--) {
+    theBars.remove(i);
+  }
 }
 
 void setupScreens() 
@@ -277,6 +422,13 @@ void setupScreens()
   unusedButton2 = new Button(480, 675, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
   unusedButton3 = new Button(480, 750, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
   unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  
+  // Joe 30/03/21 00:50
+  forwardCounty = new Button ( 650, 950, 30, 30, "->", buttonColor, smallFont, 1, 910);
+  backwardCounty = new Button ( 450, 950, 30, 30, "<-", buttonColor, smallFont, 2, 910);
+  //forwardDate = new Button ( 1050, 950, 30, 30, "->", buttonColor, smallFont, 3, 910);
+  //backwardDate = new Button ( 850, 950, 30, 30, "<-", buttonColor, smallFont, 4, 910);
+
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
   homeScreen.addButton(worldMap);
@@ -292,6 +444,12 @@ void setupScreens()
   //Statistics & Graphs
   statsGraphsScreen = new Screen(defaultBackground);
   statsGraphsScreen.addButton(returnButton);
+  // Joe 30/03/21 00:50 : Buttons to move between states on the bar charts
+  statsGraphsScreen.addButton(forwardCounty);
+  statsGraphsScreen.addButton(backwardCounty);
+  //statsGraphsScreen.addButton(forwardDate);
+  //statsGraphsScreen.addButton(backwardDate);
+  
   //World Map Screen
   worldMapScreen = new Screen(defaultBackground);
   worldMapScreen.addButton(returnButton);
