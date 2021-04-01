@@ -4,7 +4,7 @@ final int EVENT_STATS_N_GRAPHS=2;
 final int EVENT_WORLD_MAP=3;
 final int EVENT_LIVE_UPDATES=4;
 final int EVENT_FREE_1=5;//change name if using
-final int EVENT_FREE_2=6;//change name if using
+final int EVENT_DATA_TABLE=6;//change name if using
 final int EVENT_FREE_3=7;//change name if using
 final int EVENT_FREE_4=8;//change name if using
 final int EVENT_BACK_TO_HOME=9;
@@ -20,3 +20,9 @@ final String[] STATES = {"Alabama", "Alaska", "Arizona", "Arkansas", "California
                         "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
                         "West Virginia", "Wisconsin", "Wyoming"};
                         
+                        
+// Andrey 01/04/2021 14:20 Constants for data table
+final int cellHeight = 20;
+final int ColumnMinWidth = 40;
+final int spaceBetweenColumns = 10;  
+final int spaceBetweenRows = 4;  
