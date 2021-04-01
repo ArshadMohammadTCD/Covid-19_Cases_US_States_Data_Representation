@@ -37,6 +37,7 @@ class Button {
     rect(x,y,width,height);
     fill(labelColor);
     textFont(buttonFont);
+    textSize(26);
     text(label, labelx, labely);
     if(currentScreen==homeScreen)
     {
