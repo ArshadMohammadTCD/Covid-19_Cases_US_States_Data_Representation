@@ -11,7 +11,7 @@ Button worldMap;
 Button liveUpdates;
 Button covidUSMapButton; //free button
 Button dataTableButton; //free button
-Button unusedButton3; //free button
+Button treeMapButton; //free button
 Button unusedButton4; //free button
 Screen headlineFiguresScreen;
 Button returnButton;
@@ -20,7 +20,7 @@ Screen worldMapScreen;
 Screen liveUpdatesScreen;
 Screen covidUSMapScreen;
 Screen dataTableScreen;
-Screen unused3;
+Screen treeMapScreen;
 Screen unused4;
 Screen currentScreen;
 Map USmap;
@@ -48,6 +48,11 @@ Table table;
 Table dataTable;
 SQLConnection myConnection;
 
+
+//Arshad 02/04/2121 22:42
+TreeMap treeMap1;
+
+
 void setup() {
   //Zemyna 23/03/2021 20:15
   size(1920, 1080);
@@ -63,11 +68,14 @@ void setup() {
   setupStates();
   currentState=null;
 
+  //Andrey 24/03/2021  16:00
+
+  // Using a stringBuilder in order to effisciently forms strings for queries
 // Andrey 01/04/2021 17:28
  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
  // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
-  // Arshad    myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
 DbImport job = new DbImport();
   job.Run(myConnection);
  String query = "SELECT * FROM covidData WHERE county = 'California'"; 
@@ -121,8 +129,16 @@ void draw() {
   //Andrey 01/04/2021 14:24
   if (currentScreen == dataTableScreen) {
     textSize(12);
-     background(232,232,152);
+    background(232,232,152);
     grid.draw();
+    
+  }
+  // Arshad 02/04/2021 22:54
+  if (currentScreen == treeMapScreen){
+    
+    
+    treeMap1.draw();
+    
     
   }
 }
@@ -161,8 +177,8 @@ void mousePressed() {
     case EVENT_DATA_TABLE:
       currentScreen=dataTableScreen;
       break;
-    case EVENT_FREE_3:
-      currentScreen=unused3;
+    case EVENT_TREE_MAP:
+      currentScreen=treeMapScreen;
       break;
     case EVENT_FREE_4:
       currentScreen=unused4;
@@ -225,7 +241,7 @@ void mousePressed() {
       currentScreen=homeScreen;
       break;
     }
-  } else if ( currentScreen == unused3 ) {
+  } else if ( currentScreen == treeMapScreen ) {
     switch(event)
     {
     case EVENT_BACK_TO_HOME:
@@ -555,7 +571,7 @@ void setupScreens()
   liveUpdates = new Button(480, 525, 960, 50, "Live Updates", buttonColor, mainFont, EVENT_LIVE_UPDATES, 889);
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
   dataTableButton = new Button(480, 675, 960, 50, "Data Table", buttonColor, mainFont, EVENT_DATA_TABLE, 910);//change label if using
-  unusedButton3 = new Button(480, 750, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 910);//change label if using
   unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
 
   // Joe 30/03/21 00:50
@@ -570,7 +586,7 @@ void setupScreens()
   homeScreen.addButton(liveUpdates);
   homeScreen.addButton(covidUSMapButton);//change if using 
   homeScreen.addButton(dataTableButton);//change if using 
-  homeScreen.addButton(unusedButton3);//change if using
+  homeScreen.addButton(treeMapButton);//change if using
   homeScreen.addButton(unusedButton4);//change if using
   //Headline Figures
   headlineFiguresScreen = new Screen(defaultBackground);
@@ -597,8 +613,10 @@ void setupScreens()
  
   dataTableScreen = new Screen(defaultBackground);
   dataTableScreen.addButton(returnButton);
-  unused3 = new Screen(defaultBackground);
-  unused3.addButton(returnButton);
+  
+  treeMapScreen = new Screen(defaultBackground);
+  treeMapScreen.addButton(returnButton);
+  
   unused4 = new Screen(defaultBackground);
   unused4.addButton(returnButton);
 }
