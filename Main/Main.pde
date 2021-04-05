@@ -38,8 +38,12 @@ ArrayList<Bar> theBars;
 int dateIndex;
 Button forwardCounty;
 Button backwardCounty;
-Button forwardDate;
-Button backwardDate;
+Button forwardDay;
+Button backwardDay;
+Button forwardMonth;
+Button backwardMonth;
+int graphDay;
+int graphMonth;
 
 //Andrey 24/03/2021 16:00
 Grid grid;
@@ -71,17 +75,17 @@ void setup() {
   //Andrey 24/03/2021  16:00
 
   // Using a stringBuilder in order to effisciently forms strings for queries
-// Andrey 01/04/2021 17:28
- myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
- // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  // Andrey 01/04/2021 17:28
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
-DbImport job = new DbImport();
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
+  DbImport job = new DbImport();
   job.Run(myConnection);
- String query = "SELECT * FROM covidData WHERE county = 'California'"; 
-  DataSource data = new DataSource(myConnection,query);
- 
-  
+  String query = "SELECT * FROM covidData WHERE county = 'California'"; 
+  DataSource data = new DataSource(myConnection, query);
+
+
   // Andrey 25/03/2021 #17:56
   // Deleting previous and creating Index to make query's more effective
   String deleteIndex = "DROP INDEX IF EXISTS county_id";
@@ -97,6 +101,8 @@ DbImport job = new DbImport();
   stateIndex = 0;
   dateIndex = 0;
   theBars = new ArrayList();
+  graphDay = 1;
+  graphMonth = 3;
 
   // Andrey 01/04/2021 
   grid = new Grid(data.table, 100, 100, 600, 500);
@@ -129,27 +135,24 @@ void draw() {
   //Andrey 01/04/2021 14:24
   if (currentScreen == dataTableScreen) {
     textSize(12);
-    background(232,232,152);
+    background(232, 232, 152);
     grid.draw();
-    
   }
   // Arshad 02/04/2021 22:54
-  if (currentScreen == treeMapScreen){
-    
-    
+  if (currentScreen == treeMapScreen) {
+
+
     treeMap1.draw();
-    
-    
   }
 }
 //Andrey 01/04/2021 14:34
 void keyPressed() {
-      println(keyCode);
-      String result = grid.keyProcess(keyCode, key);
-      if (!result.equals("")) {
-        println(result);
-      }
-    }
+  println(keyCode);
+  String result = grid.keyProcess(keyCode, key);
+  if (!result.equals("")) {
+    println(result);
+  }
+}
 void mousePressed() {
   //Zemyna 23/03/2021 20:15
   //Joe 30/03/21 00:50 : Created switch statements depending on the current screen
@@ -203,15 +206,77 @@ void mousePressed() {
       stateIndex = 0;
       break;
     case 1:
-      emptyArray(theBars);
-      stateIndex++;
-      createChart();
+      if ( stateIndex < STATES.length - 1 ) {
+        emptyArray(theBars);
+        stateIndex++;
+        createChart();
+      }
       break;
     case 2:
-      emptyArray(theBars);
-      stateIndex--;
-      createChart();
+      if ( stateIndex > 0 ) {
+        emptyArray(theBars);
+        stateIndex--;
+        createChart();
+      }
       break;
+    case 3:
+      if ( graphMonth == 1 && graphDay < 31 ) { 
+        emptyArray(theBars);
+        graphDay++;
+        createChart();
+      } else if ( graphMonth == 2 && graphDay < 29 ) {
+        emptyArray(theBars);
+        graphDay++;
+        createChart();
+      } else if ( graphMonth == 3 && graphDay < 31 ) {
+        emptyArray(theBars);
+        graphDay++;
+        createChart();
+      } else if ( graphMonth == 4 && graphDay < 28 ) {
+        emptyArray(theBars);
+        graphDay++;
+        createChart();
+      }
+      break;
+    case 4:
+      if ( graphMonth == 1 && graphDay > 21 ) {
+        emptyArray(theBars);
+        graphDay--;
+        createChart();
+      } else if ( graphMonth == 2 && graphDay > 1 ) {
+        emptyArray(theBars);
+        graphDay--;
+        createChart();
+      } else if ( graphMonth == 3 && graphDay > 1 ) {
+        emptyArray(theBars);
+        graphDay--;
+        createChart();
+      } else if ( graphMonth == 4 && graphDay > 1 ) {
+        emptyArray(theBars);
+        graphDay--;
+        createChart();
+      }
+      break;
+    case 5:
+      if  ( graphMonth < 4 ) {
+        emptyArray(theBars);
+        graphMonth++;
+        graphDay = 1;
+        createChart();
+      }
+      break;
+    case 6:
+      if ( graphMonth > 3 ) {
+        emptyArray(theBars);
+        graphMonth--;
+        if ( graphMonth == 1 ) {
+          graphDay = 21;
+        } else {
+          graphDay = 1;
+        }
+        createChart();
+        break;
+      }
     }
   } else if ( currentScreen == worldMapScreen ) {
     switch(event) 
@@ -575,10 +640,12 @@ void setupScreens()
   unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
 
   // Joe 30/03/21 00:50
-  forwardCounty = new Button ( 650, 950, 30, 30, "->", buttonColor, smallFont, 1, 910);
-  backwardCounty = new Button ( 450, 950, 30, 30, "<-", buttonColor, smallFont, 2, 910);
-  //forwardDate = new Button ( 1050, 950, 30, 30, "->", buttonColor, smallFont, 3, 910);
-  //backwardDate = new Button ( 850, 950, 30, 30, "<-", buttonColor, smallFont, 4, 910);
+  forwardCounty = new Button ( 175, 963, 100, 30, "--------->", buttonColor, smallFont, 1, 180);
+  backwardCounty = new Button ( 75, 963, 100, 30, "<---------", buttonColor, smallFont, 2, 80);
+  forwardDay = new Button ( 350, 963, 50, 30, "->", buttonColor, smallFont, 3, 355);
+  backwardDay = new Button ( 300, 963, 50, 30, "<-", buttonColor, smallFont, 4, 305);
+  forwardMonth = new Button ( 450, 963, 50, 30, "->", buttonColor, smallFont, 5, 455);
+  backwardMonth = new Button ( 400, 963, 50, 30, "<-", buttonColor, smallFont, 6, 405);
 
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
@@ -598,9 +665,11 @@ void setupScreens()
   // Joe 30/03/21 00:50 : Buttons to move between states on the bar charts
   statsGraphsScreen.addButton(forwardCounty);
   statsGraphsScreen.addButton(backwardCounty);
-  //statsGraphsScreen.addButton(forwardDate);
-  //statsGraphsScreen.addButton(backwardDate);
-  
+  statsGraphsScreen.addButton(forwardDay);
+  statsGraphsScreen.addButton(backwardDay);
+  statsGraphsScreen.addButton(forwardMonth);
+  statsGraphsScreen.addButton(backwardMonth);
+
   //World Map Screen
   worldMapScreen = new Screen(defaultBackground);
   worldMapScreen.addButton(returnButton);
@@ -610,13 +679,13 @@ void setupScreens()
   //extra screens
   covidUSMapScreen = new Screen(defaultBackground);
   covidUSMapScreen.addButton(returnButton);
- 
+
   dataTableScreen = new Screen(defaultBackground);
   dataTableScreen.addButton(returnButton);
-  
+
   treeMapScreen = new Screen(defaultBackground);
   treeMapScreen.addButton(returnButton);
-  
+
   unused4 = new Screen(defaultBackground);
   unused4.addButton(returnButton);
 }
