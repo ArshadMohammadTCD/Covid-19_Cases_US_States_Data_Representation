@@ -53,6 +53,24 @@ Table dataTable;
 SQLConnection myConnection;
 
 
+//Andrey 06/04/2021 12:22
+Checkbox checkbox0;
+Checkbox checkbox1;
+Checkbox checkbox2;
+Checkbox checkbox3;
+Checkbox checkbox4;
+Checkbox checkbox5;
+Button updateTable;
+
+TextWidget textWidget1;
+TextWidget textWidget2;
+TextWidget textWidget3;
+TextWidget textWidget4;
+TextWidget textWidget5;
+TextWidget textWidget6;
+TextWidget focus;
+
+
 //Arshad 02/04/2121 22:42
 TreeMap treeMap1;
 
@@ -76,8 +94,8 @@ void setup() {
 
   // Using a stringBuilder in order to effisciently forms strings for queries
   // Andrey 01/04/2021 17:28
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   DbImport job = new DbImport();
@@ -105,7 +123,7 @@ void setup() {
   graphMonth = 3;
 
   // Andrey 01/04/2021 
-  grid = new Grid(data.table, 100, 100, 600, 500);
+  grid = new Grid(data.table, 50, 100, 600, 500);
 }
 
 void draw() {
@@ -135,8 +153,12 @@ void draw() {
   //Andrey 01/04/2021 14:24
   if (currentScreen == dataTableScreen) {
     textSize(12);
-    background(232, 232, 152);
+    //background(232, 232, 152);
     grid.draw();
+    textSize(20);
+    text("Tick the columns you would like to include in the table \n and enter keywords in the respective fields if you want to limit a column to a specific result", 800, 100);
+    currentScreen.drawCheckbox();
+    currentScreen.drawTextWidget();
   }
   // Arshad 02/04/2021 22:54
   if (currentScreen == treeMapScreen) {
@@ -146,18 +168,29 @@ void draw() {
   }
 }
 //Andrey 01/04/2021 14:34
-void keyPressed() {
-  println(keyCode);
+void keyReleased() {
+  println(key);
   String result = grid.keyProcess(keyCode, key);
   if (!result.equals("")) {
     println(result);
   }
+
+if(mousePressed == false){
+ if(keyCode != 38 && keyCode != 40 && keyCode != 27 && keyCode != 16){
+   focus.append(key);
+ }
+  
 }
+
+  
+}
+
 void mousePressed() {
   //Zemyna 23/03/2021 20:15
   //Joe 30/03/21 00:50 : Created switch statements depending on the current screen
   int event;
   event = currentScreen.getEvent();
+
   if ( currentScreen == homeScreen ) {
     switch(event)
     {
@@ -300,13 +333,174 @@ void mousePressed() {
       break;
     }
   } else if ( currentScreen == dataTableScreen ) {
-    switch(event)
-    {
+
+int textWidgetEvent = currentScreen.getTextWidgetEvent(); 
+    switch(textWidgetEvent) {
+    case EVENT_TEXTWIDGET_1:
+      focus = (TextWidget)textWidget1;
+      break; 
+    case EVENT_TEXTWIDGET_2:
+      focus = (TextWidget)textWidget2;
+      break; 
+    case EVENT_TEXTWIDGET_3:
+      focus = (TextWidget)textWidget3;
+      break; 
+    case EVENT_TEXTWIDGET_4:
+      focus = (TextWidget)textWidget4;
+      break; 
+    case EVENT_TEXTWIDGET_5:
+      focus = (TextWidget)textWidget5;
+      break; 
+    case EVENT_TEXTWIDGET_6:
+      focus = (TextWidget)textWidget6;
+      break; 
+    default:
+     
+    }
+
+String newQuery = "SELECT ";
+    //Andrey 06/04/2021 13:27
+    int checkboxEvent = currentScreen.getCheckboxEvent();
+    switch(checkboxEvent) {
+    case EVENT_CHECKBOX_0:
+      checkbox0.is_checked = !checkbox0.is_checked;
+      break;
+    case EVENT_CHECKBOX_1:
+      checkbox1.is_checked = !checkbox1.is_checked;
+      break;
+    case EVENT_CHECKBOX_2:
+      checkbox2.is_checked = !checkbox2.is_checked;
+      break;
+    case EVENT_CHECKBOX_3:
+      checkbox3.is_checked = !checkbox3.is_checked;
+      break;
+    case EVENT_CHECKBOX_4:
+      checkbox4.is_checked = !checkbox4.is_checked;
+      break;
+    case EVENT_CHECKBOX_5:
+      checkbox5.is_checked = !checkbox5.is_checked;
+      break;
+    }
+
+    switch(event){
+
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
       break;
+    case EVENT_UPDATE_TABLE:
+
+      if (checkbox0.is_checked) {
+        newQuery += "date";
+        if (checkbox1.is_checked || checkbox2.is_checked || checkbox3.is_checked  || checkbox4.is_checked|| checkbox5.is_checked) {
+          newQuery += ",";
+        }
+      }
+
+      if (checkbox1.is_checked) {
+        newQuery += "area";
+        if (checkbox2.is_checked || checkbox3.is_checked || checkbox4.is_checked|| checkbox5.is_checked) {
+          newQuery += ",";
+        }
+      }
+
+      if (checkbox2.is_checked) {
+        newQuery += "county";
+        if (checkbox3.is_checked || checkbox4.is_checked || checkbox5.is_checked) {
+          newQuery += ",";
+        }
+      }
+
+      if (checkbox3.is_checked) {
+        newQuery += "geoid";
+        if (checkbox4.is_checked || checkbox5.is_checked ) {
+          newQuery += ",";
+        }
+      }
+
+      if (checkbox4.is_checked) {
+        newQuery += "cases";
+        if (checkbox5.is_checked) {
+          newQuery += ",";
+        }
+      }
+
+      if (checkbox5.is_checked) {
+        newQuery += "country";
+      }
+      if(newQuery.equals("SELECT")){
+      newQuery += " *";
     }
-  } else if ( currentScreen == treeMapScreen ) {
+      newQuery += " FROM covidData WHERE ";
+
+      if (!textWidget1.label.isEmpty()) {
+        newQuery += "date = ";
+        newQuery += "'";
+        newQuery += textWidget1.label;
+        newQuery += "'";
+        if (!textWidget2.label.isEmpty() || !textWidget3.label.isEmpty() || !textWidget4.label.isEmpty()  || !textWidget5.label.isEmpty()|| !textWidget6.label.isEmpty()) {
+          newQuery += " AND ";
+        }
+      }
+
+      if (!textWidget2.label.isEmpty()) {
+        newQuery += "area = ";
+        newQuery += "'";
+        newQuery += textWidget2.label;
+        newQuery += "'";
+        if (!textWidget3.label.isEmpty() || !textWidget4.label.isEmpty() || !textWidget5.label.isEmpty()|| !textWidget6.label.isEmpty()) {
+          newQuery += "  AND ";
+        }
+      }
+      if (!textWidget3.label.isEmpty()) {
+        newQuery += " county = ";
+        newQuery += "'";
+        newQuery += textWidget3.label;
+        newQuery += "'";
+        if (!textWidget4.label.isEmpty() || !textWidget5.label.isEmpty() || !textWidget6.label.isEmpty()) {
+          newQuery += "  AND ";
+        }
+      }
+      if (!textWidget4.label.isEmpty()) {
+        newQuery += "geoid = ";
+        newQuery += textWidget4.label;
+        if (!textWidget5.label.isEmpty()|| !textWidget6.label.isEmpty()) {
+          newQuery += "  AND ";
+        }
+      }
+      if (!textWidget5.label.isEmpty()) {
+        newQuery += "cases = ";
+        newQuery += textWidget5.label;
+        if (!textWidget6.label.isEmpty()) {
+          newQuery += " AND ";
+        }
+      }
+      if (!textWidget6.label.isEmpty()) {
+        newQuery += "country = ";
+        newQuery += "'";
+        newQuery += textWidget6.label;
+        newQuery += "'";
+      }
+
+     
+      checkbox0.is_checked = false;
+      checkbox1.is_checked = false;
+      checkbox2.is_checked = false;
+      checkbox3.is_checked = false;
+      checkbox4.is_checked = false;
+      checkbox5.is_checked = false;
+      break;
+      default:
+      newQuery += "* FROM covidData WHERE county = 'California'";
+    }
+    //Andrey 06/04/2021 16:21
+    
+     println(newQuery);
+    DataSource data2 = new DataSource(myConnection, newQuery);
+    newQuery = "";
+    grid = new Grid(data2.table, 50, 100, 600, 500);
+  } 
+  // End Andrey 06/04/2021
+  else if ( currentScreen == treeMapScreen ) {
     switch(event)
     {
     case EVENT_BACK_TO_HOME:
@@ -529,6 +723,9 @@ void mousePressed() {
   }
 }
 
+
+
+
 void mouseMoved()
 {
   //Zemyna 23/03/2021 20:15
@@ -570,6 +767,7 @@ void mouseMoved()
     }
   }
 }
+
 
 void printTable(Table table) {
   // Andrey 24/03/2021 16:00
@@ -679,9 +877,36 @@ void setupScreens()
   //extra screens
   covidUSMapScreen = new Screen(defaultBackground);
   covidUSMapScreen.addButton(returnButton);
-
+  //Andrey 06/04/2021 12:25
   dataTableScreen = new Screen(defaultBackground);
   dataTableScreen.addButton(returnButton);
+  checkbox0 = new Checkbox(800, 150, 30, 30, "Date:", color(255), EVENT_CHECKBOX_0, -80);
+  checkbox1 = new Checkbox(800, 200, 30, 30, "Area:", color(255), EVENT_CHECKBOX_1, -80);
+  checkbox2 = new Checkbox(800, 250, 30, 30, "County:", color(255), EVENT_CHECKBOX_2, -80);
+  checkbox3 = new Checkbox(800, 300, 30, 30, "Geo-id:", color(255), EVENT_CHECKBOX_3, -80);
+  checkbox4 = new Checkbox(800, 350, 30, 30, "cases:", color(255), EVENT_CHECKBOX_4, -80);
+  checkbox5 = new Checkbox(800, 400, 30, 30, "Country:", color(255), EVENT_CHECKBOX_5, -80);
+  updateTable = new Button(800, 500, 150, 30, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 800);
+  textWidget1 = new TextWidget(900, 150, 200, 30, "", color(255), EVENT_TEXTWIDGET_1, 20);
+  textWidget2 = new TextWidget(900, 200, 200, 30, "Orange", color(255), EVENT_TEXTWIDGET_2, 20);
+  textWidget3 = new TextWidget(900, 250, 200, 30, "", color(255), EVENT_TEXTWIDGET_3, 20);
+  textWidget4 = new TextWidget(900, 300, 200, 30, "", color(255), EVENT_TEXTWIDGET_4, 20);
+  textWidget5 = new TextWidget(900, 350, 200, 30, "", color(255), EVENT_TEXTWIDGET_5, 20);
+  textWidget6 = new TextWidget(900, 400, 200, 30, "", color(255), EVENT_TEXTWIDGET_6, 20);
+  dataTableScreen.addCheckbox(checkbox0);
+  dataTableScreen.addCheckbox(checkbox1);
+  dataTableScreen.addCheckbox(checkbox2);
+  dataTableScreen.addCheckbox(checkbox3);
+  dataTableScreen.addCheckbox(checkbox4);
+  dataTableScreen.addCheckbox(checkbox5);
+  dataTableScreen.addButton(updateTable);
+  dataTableScreen.addTextWidget(textWidget1);
+  dataTableScreen.addTextWidget(textWidget2);
+  dataTableScreen.addTextWidget(textWidget3);
+  dataTableScreen.addTextWidget(textWidget4);
+  dataTableScreen.addTextWidget(textWidget5);
+  dataTableScreen.addTextWidget(textWidget6);
+
 
   treeMapScreen = new Screen(defaultBackground);
   treeMapScreen.addButton(returnButton);

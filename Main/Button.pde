@@ -56,6 +56,7 @@ class Button {
       System.out.print("Button " + event + " pressed ");
       return event;
     }
+    
     return EVENT_NULL;
   }
 }

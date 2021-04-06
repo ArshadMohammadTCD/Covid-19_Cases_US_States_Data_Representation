@@ -6,7 +6,7 @@ class WorldMap
   
   WorldMap()
   {
-    image = worldMapImage;
+    //image = worldMapImage;
   }
   
   void draw()
