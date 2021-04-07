@@ -69,7 +69,7 @@ void setup() {
   defaultBackground = loadImage("Default Screen1.png");
   
   // Andrey 01/04/2021 17:28
-  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
