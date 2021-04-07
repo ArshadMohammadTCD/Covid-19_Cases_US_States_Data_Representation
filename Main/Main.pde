@@ -7,7 +7,7 @@ PImage homeScreenBackground;
 Screen homeScreen;
 Button headlineFigures;
 Button statisticsAndGraphs;
-Button worldMap;
+Button worldMapButton;
 Button liveUpdates;
 Button covidUSMapButton; //free button
 Button dataTableButton; //free button
@@ -27,6 +27,9 @@ Map USmap;
 PImage mapImageUS;
 boolean displayPopUp;
 State currentState;
+//Zemyna 05/04/2021 20:24
+PImage worldMapImage;
+WorldMap worldMap;
 
 
 // Joe 25/03/21 10:20 : Values I made just for creating the tables of info on the screen, delete later
@@ -89,14 +92,17 @@ void setup() {
   USmap = new Map();
   setupStates();
   currentState=null;
+  //Zemyna 05/04/2021 20:24
+  worldMapImage = loadImage("World Map.png");
+  worldMap = new WorldMap();
 
   //Andrey 24/03/2021  16:00
 
   // Using a stringBuilder in order to effisciently forms strings for queries
   // Andrey 01/04/2021 17:28
-  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   DbImport job = new DbImport();
   job.Run(myConnection);
@@ -128,6 +134,7 @@ void setup() {
 
 void draw() {
   currentScreen.draw();
+  
   // Joe 25/03/21 10:20
   if (currentScreen == statsGraphsScreen) {
     //drawTable(recentSamples);
@@ -166,6 +173,18 @@ void draw() {
 
     treeMap1.draw();
   }
+  
+  //Zemyna 05/04/2021 20:24
+  if (currentScreen == worldMapScreen)
+  {
+    worldMap.draw();
+  }
+  
+  if (currentScreen == headlineFiguresScreen)
+  {
+    drawHeadlineFiguresScreen();
+  }
+  
 }
 //Andrey 01/04/2021 14:34
 void keyReleased() {
@@ -830,11 +849,11 @@ void setupScreens()
   homeScreen = new Screen(homeScreenBackground);
   headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
   statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
-  worldMap = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
+  worldMapButton = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
   liveUpdates = new Button(480, 525, 960, 50, "Live Updates", buttonColor, mainFont, EVENT_LIVE_UPDATES, 889);
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
-  dataTableButton = new Button(480, 675, 960, 50, "Data Table", buttonColor, mainFont, EVENT_DATA_TABLE, 910);//change label if using
-  treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 910);//change label if using
+  dataTableButton = new Button(480, 675, 960, 50, "Data Table", buttonColor, mainFont, EVENT_DATA_TABLE, 900);//change label if using
+  treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
   unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
 
   // Joe 30/03/21 00:50
@@ -847,7 +866,7 @@ void setupScreens()
 
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
-  homeScreen.addButton(worldMap);
+  homeScreen.addButton(worldMapButton);
   homeScreen.addButton(liveUpdates);
   homeScreen.addButton(covidUSMapButton);//change if using 
   homeScreen.addButton(dataTableButton);//change if using 
@@ -913,4 +932,58 @@ void setupScreens()
 
   unused4 = new Screen(defaultBackground);
   unused4.addButton(returnButton);
+}
+
+//Zemyna 07/04/2021 16:20
+void drawHeadlineFiguresScreen()
+{
+  //header
+    stroke(57, 57, 57);
+    textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
+    fill(193, 193, 193);
+    rect(70, 70, 1470, 103);
+    fill(209, 209, 209);
+    rect(80, 80, 1450, 83);
+    fill(46, 46, 46);
+    textSize(78);
+    text("Headline Figures", 100, 150);
+    
+    fill(193,193,193);
+    rect(120,270,700,3);
+    rect(70,200,1775,789);
+    fill(107, 108, 147);
+    rect(80, 210, 1755, 769);
+    fill(193,193,193);
+    rect(90,220,857.5,364.5);
+    rect(967.5,220,857.5,364.5);
+    rect(90,604.5,857.5,364.5);
+    rect(967.5,604.5,857.5,364.5);
+    fill(107, 108, 147);
+    rect(100,230,837.5,344.5);
+    rect(977.5,230,837.5,344.5);
+    rect(100,614.5,837.5,344.5);
+    rect(977.5,614.5,837.5,344.5);
+    //text
+    fill(237, 237, 237);
+    textSize(46);
+    text("Total Confirmed Cases in the World", 170, 280);
+    text("Total Deaths from Covid-19 Globally", 200, 670);
+    text("Total Vaccinations Administered Globally", 1000, 280);
+    text("Last Updated:", 1250, 670);
+    fill(193,193,193);
+    rect(120,300,780,3);
+    rect(120,700,780,3);
+    rect(1000,700,780,3);
+    rect(1000,300,780,3);
+    //random information
+    String totalCases = "132,000,000";
+    String totalDeaths = "2,870,000";
+    String totalVaccinations = "693,000,000";
+    String dateUpdated = "06/04/2021";
+    textSize(78);
+    fill(237, 237, 237);
+    text(totalCases,300,450);
+    text(totalDeaths,350,850);
+    text(totalVaccinations,1200,450);
+    text(dateUpdated,1210,850);
 }

@@ -6,7 +6,7 @@ class WorldMap
   
   WorldMap()
   {
-    //image = worldMapImage;
+    image = worldMapImage;
   }
   
   void draw()
@@ -47,8 +47,6 @@ class WorldMap
     text("ormation Information ", 1590, 430);
     text("Information Informati", 1590, 460);
     text("on Information Inform", 1590, 490);
-    
-    
     
     //rectangle indexes for each country
     /*

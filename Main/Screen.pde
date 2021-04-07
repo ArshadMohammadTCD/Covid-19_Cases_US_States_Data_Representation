@@ -19,6 +19,19 @@ class Screen {
       Button currentButton = (Button) buttonList.get(i);
       currentButton.draw();
     }
+    //Zemyna 07/04/2021 16:19
+    if (currentScreen == homeScreen)
+    {
+      background(screenBackground);
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(460,280,1000,615);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
+    }
   }
 
   int getEvent()
