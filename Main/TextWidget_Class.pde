@@ -9,9 +9,10 @@ class TextWidget {
   color widgetColor;
   PFont font; 
   int event;
+  boolean hasCursor;
 
 
-  TextWidget(int x, int y, int width, int height, String label, color widgetColor, int event, int maxlen) {
+  TextWidget(int x, int y, int width, int height, String label, color widgetColor, int event, int maxlen, boolean hasCursor) {
     this.x=x; 
     this.y=y; 
     this.width = width; 
@@ -20,14 +21,16 @@ class TextWidget {
     this.event=event;
     this.widgetColor=widgetColor;
     this.maxlen=maxlen;
+    this.hasCursor = hasCursor;
   }
   void append(char s) {
     if (s==BACKSPACE) {
       if (!label.equals(""))
         label=label.substring(0, label.length()-1);
     } else if (label.length() <maxlen)
-      
+      if(s != 16){
       label=label+String.valueOf(s);
+      }
       println(s);
   }
 
@@ -36,8 +39,13 @@ class TextWidget {
     fill(widgetColor);
     rect(x, y, width, height);
     fill(0);
-    textSize(20);
-    text(label, x, y+height-6);
+    textSize(14);
+    if(hasCursor){
+    text(label+"|", x+5, y+height-6);
+    }
+    else {
+      text(label, x+5, y+height-6);
+    }
     stroke(0);
    
   }

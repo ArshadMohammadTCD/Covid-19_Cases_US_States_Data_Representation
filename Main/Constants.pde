@@ -8,7 +8,7 @@ final int EVENT_DATA_TABLE=6;//change name if using
 final int EVENT_TREE_MAP=7;//change name if using
 final int EVENT_FREE_4=8;//change name if using
 final int EVENT_BACK_TO_HOME=9;
-// Andrey 06/04/2021
+// Andrey 06/04/2021 20:00
 final int EVENT_CHECKBOX_0 = 10;
 final int EVENT_CHECKBOX_1 = 11;
 final int EVENT_CHECKBOX_2 = 12;
@@ -23,6 +23,9 @@ final int EVENT_TEXTWIDGET_3 = 19;
 final int EVENT_TEXTWIDGET_4 = 20;
 final int EVENT_TEXTWIDGET_5 = 21;
 final int EVENT_TEXTWIDGET_6 = 22;
+
+final int EVENT_GRID_1 = 23;
+final int EVENT_GRID_2 = 24;
 
 // Joe 25/03/21 10:20
 final String[] STATES = {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 

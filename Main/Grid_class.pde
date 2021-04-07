@@ -1,3 +1,4 @@
+// Andrey 06/04/2020
 class Grid {
   private Table testTable;
   private float topx;
@@ -17,8 +18,10 @@ class Grid {
   color selectCellStroke;    // color rect outline
   color selectCellFillText;  // color text
   int selectedRow; 
+  int event;
 
-  Grid(Table t, float x, float y, float w, float h) {
+  Grid(Table t, float x, float y, float w, float h, int event) {
+    this.event = event;
     testTable = t;
     topx = x;
     topy = y+(cellHeight+spaceBetweenRows)+spaceBetweenRows*2;
@@ -179,4 +182,15 @@ class Grid {
 
       return "";
   }
+  
+  int getEvent(int mX, int mY)
+  {
+    if ((mX > topx) && (mX < topx+width) && (mY > y) && (mY < y+height))
+    {
+      System.out.print("grid event " + event + " selected ");
+      return event;
+    }
+    return EVENT_NULL;
+  }
+  
 }

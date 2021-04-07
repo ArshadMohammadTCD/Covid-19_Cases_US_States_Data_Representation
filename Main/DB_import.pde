@@ -62,6 +62,15 @@ public void Run(SQLConnection myConnection){
   }
   // Sends that query to database
   myConnection.updateQuery(stringBuilder.toString());
+  
+    // Andrey 25/03/2021 #17:56
+  // Deleting previous and creating Index to make query's more effective
+  
+  String deleteIndex = "DROP INDEX IF EXISTS county_id";
+  String createIndex = "CREATE INDEX IF NOT EXISTS county_id ON covidData(county);";
+  myConnection.updateQuery(deleteIndex);
+  myConnection.updateQuery(createIndex);
+
   print("done");
 
 }
