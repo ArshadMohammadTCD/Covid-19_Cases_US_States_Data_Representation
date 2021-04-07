@@ -15,12 +15,12 @@ class Bar {
     this.population = population;
     this.areaName = areaName;
     this.xpos = xpos;
-    this.ypos = 850;
+    this.ypos = 900; // y position of the bottom of each bar, along the line
     this.speed = speed;
     this.counter = 0;
     this.blockHeight = 0;
     this.blockWidth = mappedWidth;
-    this.blockColour = color(random(0, 255), random(0, 255), random(0, 255));
+    this.blockColour = color(random(0, 255), random(0, 255), random(0, 255)); // colour of the bars, currently random
     mouseOver = false;
   }
 
@@ -54,9 +54,9 @@ void drawBars() {
     theBars.get(i).draw();
     if ( theBars.get(i).mouseOver ) {
       fill(0);
-      text("Area: " + theBars.get(i).areaName, 920, 915);
-      text("Recorded Cases: " + theBars.get(i).population, 1500, 915);
-      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 920, 945);
+      text("Area: " + theBars.get(i).areaName, 925, 965); // text on the bottom right for the bar the mouse is hovering over
+      text("Recorded Cases: " + theBars.get(i).population, 1500, 965); // recorded cases
+      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 925, 1015); // % of total cases in the state from that area
       stroke(0);
     }
   }
@@ -66,10 +66,10 @@ void createChart() {
   // Joe 30/03/21 00:50
   String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + STATES[stateIndex] + "' AND date = '" + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020' ORDER BY area ASC";
   table = myConnection.runQuery(caseQuery);
-  int xpos = 50;
+  int xpos = 100;
   int mapRange = findMaxValue(table);
   if ( table.getRowCount() > 0) {
-    float mapWidth = 1720/table.getRowCount();
+    float mapWidth = 1670/table.getRowCount(); // change this for the length of the x-axis line
     for (TableRow row : table.rows())
     {
       for (int i = 0; i < row.getColumnCount() - 1; i++)
@@ -88,27 +88,27 @@ void drawChart() {
   // Joe 30/03/21 00:50
   stroke(0);
   fill(83, 83, 83);
-  rect(75, 917, 200, 35);
-  rect(300, 917, 200, 35);
+  rect(90, 929, 200, 35); // rectangle for the state
+  rect(300, 929, 200, 35); // rectangle for the date
   fill(255);
-  text(STATES[stateIndex], 85, 944);
-  text((graphDay + "/0" + graphMonth + "/2020"), 310, 944); 
-  rect(910, 882, 910, 150);
-  rect(35, 132, 1785, 750);
+  text(STATES[stateIndex], 100, 956); // title for state over the buttons
+  text((graphDay + "/0" + graphMonth + "/2020"), 310, 956); 
+  rect(910, 882, 910, 150); // rectangle for bottom right, needs to be aligned
+  rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);
   drawBars();
   fill(0);
-  line(50, 150, 50, 850);
-  line(50, 850, 1770, 850);
+  line(100, 230, 100, 900); // line for y - axis of the bar chart
+  line(100, 900, 1770, 900); // line for the x - axis of the bar chart
   stroke(57, 57, 57);
   textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
   fill(193, 193, 193);
-  rect(70, 28, 1470, 103);
+  rect(70, 28, 1470, 103); // outer rectangle of header
   fill(209, 209, 209);
-  rect(80, 38, 1450, 83);
+  rect(80, 38, 1450, 83); // inner rectangle of header
   fill(46, 46, 46);
-  textSize(78);
-  text("Cases in " + STATES[stateIndex] + " at " + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020", 100, 102);
+  textSize(78); // size of the text
+  text("Cases in " + STATES[stateIndex] + " at " + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020", 100, 102); // header of the title
 }
 
 int findMaxValue(Table table ) {

@@ -69,8 +69,8 @@ void setup() {
   defaultBackground = loadImage("Default Screen1.png");
   
   // Andrey 01/04/2021 17:28
-  myConnection = new SQLiteConnection("jdbc:sqlite:/covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
@@ -653,12 +653,12 @@ void setupScreens()
   unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
 
   // Joe 30/03/21 00:50
-  forwardCounty = new Button ( 175, 963, 100, 30, "--------->", buttonColor, smallFont, 1, 180);
-  backwardCounty = new Button ( 75, 963, 100, 30, "<---------", buttonColor, smallFont, 2, 80);
-  forwardDay = new Button ( 350, 963, 50, 30, "->", buttonColor, smallFont, 3, 355);
-  backwardDay = new Button ( 300, 963, 50, 30, "<-", buttonColor, smallFont, 4, 305);
-  forwardMonth = new Button ( 450, 963, 50, 30, "->", buttonColor, smallFont, 5, 455);
-  backwardMonth = new Button ( 400, 963, 50, 30, "<-", buttonColor, smallFont, 6, 405);
+  forwardCounty = new Button ( 190, 975, 100, 30, "  -------->", buttonColor, smallFont, 1, 180); // right button under the box with the state name
+  backwardCounty = new Button ( 90, 975, 100, 30, "  <--------", buttonColor, smallFont, 2, 80); // left button under the box with the state name
+  forwardDay = new Button ( 350, 963, 50, 30, "->", buttonColor, smallFont, 3, 355); // center-left button under the box with the date
+  backwardDay = new Button ( 300, 963, 50, 30, "<-", buttonColor, smallFont, 4, 305); // left most button under the box with the date
+  forwardMonth = new Button ( 450, 963, 50, 30, "->", buttonColor, smallFont, 5, 455); // right most button under the box with the date
+  backwardMonth = new Button ( 400, 963, 50, 30, "<-", buttonColor, smallFont, 6, 405); // center right button under the box with the date
 
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
