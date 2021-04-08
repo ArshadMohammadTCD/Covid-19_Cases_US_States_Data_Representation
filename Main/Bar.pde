@@ -20,7 +20,7 @@ class Bar {
     this.counter = 0;
     this.blockHeight = 0;
     this.blockWidth = mappedWidth;
-    this.blockColour = color(random(0, 255), random(0, 255), random(0, 255)); // colour of the bars, currently random
+    this.blockColour = color(random(100, 198), random(5, 170), 235); // colour of the bars, currently random
     mouseOver = false;
   }
 
@@ -54,7 +54,7 @@ void drawBars() {
     theBars.get(i).draw();
     if ( theBars.get(i).mouseOver ) {
       fill(0);
-      text("Area: " + theBars.get(i).areaName, 925, 965); // text on the bottom right for the bar the mouse is hovering over
+      text("Area: " + theBars.get(i).areaName, 1050, 965); // text on the bottom right for the bar the mouse is hovering over
       text("Recorded Cases: " + theBars.get(i).population, 1500, 965); // recorded cases
       text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 925, 1015); // % of total cases in the state from that area
       stroke(0);
@@ -88,12 +88,13 @@ void drawChart() {
   // Joe 30/03/21 00:50
   stroke(0);
   fill(83, 83, 83);
-  rect(90, 929, 200, 35); // rectangle for the state
-  rect(300, 929, 200, 35); // rectangle for the date
+  rect(190, 929, 200, 35); // rectangle for the state
+  rect(610, 929, 200, 35); // rectangle for the date
   fill(255);
-  text(STATES[stateIndex], 100, 956); // title for state over the buttons
-  text((graphDay + "/0" + graphMonth + "/2020"), 310, 956); 
-  rect(910, 882, 910, 150); // rectangle for bottom right, needs to be aligned
+  text(STATES[stateIndex], 200, 956); // title for state over the buttons
+  text((graphDay + "/0" + graphMonth + "/2020"), 620, 956); 
+  //rect(910, 882, 910, 150); // rectangle for bottom right, needs to be aligned
+  fill(240,235,245);
   rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);
   drawBars();
@@ -103,12 +104,12 @@ void drawChart() {
   stroke(57, 57, 57);
   textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
   fill(193, 193, 193);
-  rect(70, 28, 1470, 103); // outer rectangle of header
+  rect(70, 70, 1470, 103); // outer rectangle of header
   fill(209, 209, 209);
-  rect(80, 38, 1450, 83); // inner rectangle of header
+  rect(80, 80, 1450, 83); // inner rectangle of header
   fill(46, 46, 46);
   textSize(78); // size of the text
-  text("Cases in " + STATES[stateIndex] + " at " + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020", 100, 102); // header of the title
+  text("Cases in " + STATES[stateIndex] + " at " + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020", 100, 150); // header of the title
 }
 
 int findMaxValue(Table table ) {

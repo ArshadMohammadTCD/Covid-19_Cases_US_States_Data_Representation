@@ -32,6 +32,20 @@ class Screen {
       currentButton.draw();
       }
     }
+    if (currentScreen==statsGraphsScreen)
+    {
+      //Zemyna 08/04/2021 06:43
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(70,200,1775,789);
+      fill(107, 108, 147);
+      rect(80, 210, 1755, 769);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
+    }
   }
 
   int getEvent()
