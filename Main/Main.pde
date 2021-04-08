@@ -14,7 +14,7 @@ Button liveUpdates;
 Button covidUSMapButton; //free button
 Button dataTableButton; //free button
 Button treeMapButton; //free button
-Button unusedButton4; //free button
+Button lineChartButton; //free button
 Screen headlineFiguresScreen;
 Button returnButton;
 Screen statsGraphsScreen;
@@ -23,7 +23,7 @@ Screen liveUpdatesScreen;
 Screen covidUSMapScreen;
 CumulativeCasesScreen dataTableScreen;
 Screen treeMapScreen;
-Screen unused4;
+Screen lineChartScreen;
 Screen currentScreen;
 Map USmap;
 PImage mapImageUS;
@@ -50,6 +50,13 @@ Button forwardMonth;
 Button backwardMonth;
 int graphDay;
 int graphMonth;
+IntList firstCases;
+IntList secondCases;
+StringList caseDates;
+ArrayList<Point> firstPoints;
+ArrayList<Line> firstLines;
+ArrayList<Point> secondPoints;
+ArrayList<Line> secondLines;
 
 //Andrey 24/03/2021 16:00
 SQLConnection myConnection;
@@ -70,8 +77,8 @@ void setup() {
   
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -99,6 +106,7 @@ void setup() {
   theBars = new ArrayList();
   graphDay = 1;
   graphMonth = 3;
+  setupLineChart();
 
 }
 
@@ -116,6 +124,10 @@ void draw() {
    counter = 0;
    stateIndex = 0;
    }*/
+   
+   if (currentScreen == lineChartScreen) {
+     drawLineChart();
+   }
 
   //Zemyna 01/04/2021 05:23
   if (currentScreen==covidUSMapScreen)
@@ -184,7 +196,7 @@ void mousePressed() {
       currentScreen=treeMapScreen;
       break;
     case EVENT_FREE_4:
-      currentScreen=unused4;
+      currentScreen=lineChartScreen;
       break;
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
@@ -323,6 +335,17 @@ void mousePressed() {
       break;
     }
   }
+  
+  // Joe 09/04/2021 00:51
+  if (currentScreen==lineChartScreen) {
+    switch(event) {
+      case EVENT_BACK_TO_HOME:
+        currentScreen=homeScreen;
+        emptyLineChart();
+        break;
+    }
+  }
+  // End Joe
 
   String stateEvent = USmap.getMapEvent();//Zemyna 01/04/2021 05:35
   if (currentScreen==covidUSMapScreen)
@@ -559,7 +582,7 @@ void mouseMoved()
   // Joe 01/04/2021 11:25 
   for (int i = 0; i<theBars.size(); i++) {
     Bar theBar = (Bar) theBars.get(i);
-    if ( mouseY >= 850 - theBar.blockHeight - 20 && mouseY <= 850 && mouseX >= theBar.xpos && mouseX < theBar.xpos + theBar.blockWidth ) {
+    if ( mouseY >= 220 && mouseY <= 900 && mouseX >= theBar.xpos && mouseX < theBar.xpos + theBar.blockWidth ) {
       theBars.get(i).mouseOver = true;
     } else {
       theBars.get(i).mouseOver = false;
@@ -596,45 +619,6 @@ void printTable(Table table) {
   }
 }
 
-void drawTable(Table table) {
-  // Joe 25/03/21 10:19: Code to draw a table and the dates, cases and areas of each state in ascending order
-  int textYpos = 130;
-  int textXpos = 100;
-  stroke(0);
-  fill(255);
-  for ( int i = 0; i < 6; i++) {
-    rect(80 + (i * 270), 100, 270, 850);
-  }
-  fill(0);
-  for (TableRow row : table.rows())
-  {
-    for (int i = 0; i < row.getColumnCount(); i++)
-    {
-      text(row.getString(i), (i*100) + textXpos, textYpos);
-    }
-    textYpos += 30;
-    if ( textYpos >= height-130 ) {
-      textYpos = 130;
-      textXpos += 270;
-    }
-  }
-  textFont(mainFont);
-  text("The most recent reports from: " + STATES[stateIndex], 150, 72); 
-  if (counter == 150 && stateIndex < STATES.length ) {
-    counter = 0;
-    stateIndex++;
-  }
-  recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '28/04/2020' AND county = '" + STATES[stateIndex] + "'";
-
-
-
-
-  int time1 = millis();
-  recentSamples = myConnection.runQuery(recentQuery);
-  int time2 = millis();
-  System.out.println(time2-time1);
-}
-
 
 void setupScreens() 
 {
@@ -650,7 +634,7 @@ void setupScreens()
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
   dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative cases in the US by states/area", buttonColor, mainFont, EVENT_DATA_TABLE, 710);//change label if using
   treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
-  unusedButton4 = new Button(480, 825, 960, 50, "//Unused", buttonColor, mainFont, EVENT_FREE_1, 910);//change label if using
+  lineChartButton = new Button(480, 825, 960, 50, "Line Chart of Cases", buttonColor, mainFont, EVENT_FREE_4, 860);//change label if using
 
   // Joe 30/03/21 00:50
   forwardCounty = new Button ( 390, 935, 100, 30, " --------->", buttonColor, smallFont, 1, 390); // right button under the box with the state name
@@ -667,7 +651,7 @@ void setupScreens()
   homeScreen.addButton(covidUSMapButton);//change if using 
   homeScreen.addButton(dataTableButton);//change if using 
   homeScreen.addButton(treeMapButton);//change if using
-  homeScreen.addButton(unusedButton4);//change if using
+  homeScreen.addButton(lineChartButton);//change if using
   //Headline Figures
   headlineFiguresScreen = new Screen(defaultBackground);
   returnButton = new Button(20, 30, 30, 30, "X", buttonColor, mainFont, EVENT_BACK_TO_HOME, 28);
@@ -699,8 +683,8 @@ void setupScreens()
   treeMapScreen = new Screen(defaultBackground);
   treeMapScreen.addButton(returnButton);
 
-  unused4 = new Screen(defaultBackground);
-  unused4.addButton(returnButton);
+  lineChartScreen = new Screen(defaultBackground);
+  lineChartScreen.addButton(returnButton);
 }
 
 //Zemyna 07/04/2021 16:20
