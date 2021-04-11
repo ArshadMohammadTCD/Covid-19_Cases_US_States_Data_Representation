@@ -2,7 +2,7 @@ final int EVENT_NULL=0;
 final int EVENT_HEADLINE_FIGURES=1;
 final int EVENT_STATS_N_GRAPHS=2;
 final int EVENT_WORLD_MAP=3;
-final int EVENT_LIVE_UPDATES=4;
+final int EVENT_TIMELINE_CASES=4;
 final int EVENT_FREE_1=5;//change name if using
 final int EVENT_DATA_TABLE=6;//change name if using
 final int EVENT_TREE_MAP=7;//change name if using
@@ -26,7 +26,7 @@ final int EVENT_TEXTWIDGET_6 = 22;
 
 final int EVENT_GRID_1 = 23;
 final int EVENT_GRID_2 = 24;
-
+final int EVENT_GRID_3 = 25;
 // Joe 25/03/21 10:20
 final String[] STATES = {"Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
                         "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", 

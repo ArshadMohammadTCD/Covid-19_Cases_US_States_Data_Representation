@@ -34,13 +34,17 @@ class CumulativeCasesScreen extends Screen {
     updateInfo = new Button(650, 100, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 670);
     addButton(updateInfo);
 
-    setupData();
+    setupData(false);
   }
-  void setupData() {
+  void setupData(boolean refresh) {
+    if (refresh) {
+      gridList.remove(casesByState);
+      gridList.remove(casesByArea);
+    }
 
 
-    String queryByState = "SELECT county, SUM(cases) AS cases FROM covidData WHERE date < '"+ dateInput.label + "' GROUP BY 1 ORDER BY 1 ASC";
-    String queryByArea = "SELECT area, SUM(cases) AS cases FROM covidData WHERE date < '"+ dateInput.label + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
+    String queryByState = "SELECT county, SUM(cases) AS cases FROM covidData WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
+    String queryByArea = "SELECT area, SUM(cases) AS cases FROM covidData WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
     println(queryByState);
     println(queryByArea);
 
@@ -52,8 +56,6 @@ class CumulativeCasesScreen extends Screen {
     gridList.add(casesByState);
     casesByAreaDs = new DataSource(connection, queryByArea);
     casesByArea = new Grid(casesByAreaDs.table, 650, 300, 600, 600, EVENT_GRID_2);
-
-    gridList.add(casesByState);
     gridList.add(casesByArea);
   }
 
@@ -171,47 +173,3 @@ class CumulativeCasesScreen extends Screen {
   }
 
 }
-
-//Andrey 06/04/2021 12:22
-/*
- 
- 
- int textWidgetEvent = currentScreen.getTextWidgetEvent(); 
- switch(textWidgetEvent) {
- case EVENT_TEXTWIDGET_1:
- focus = (TextWidget)textWidget1;
- break; 
- case EVENT_TEXTWIDGET_2:
- focus = (TextWidget)textWidget2;
- break; 
- case EVENT_TEXTWIDGET_3:
- focus = (TextWidget)textWidget3;
- break; 
- case EVENT_TEXTWIDGET_4:
- focus = (TextWidget)textWidget4;
- break; 
- case EVENT_TEXTWIDGET_5:
- focus = (TextWidget)textWidget5;
- break; 
- case EVENT_TEXTWIDGET_6:
- focus = (TextWidget)textWidget6;
- break; 
- default:
- 
- }
- 
- String newQuery = "SELECT ";
- //Andrey 06/04/2021 13:27
- 
- 
- case EVENT_UPDATE_TABLE:
- 
- 
- // default:
- // newQuery += "* FROM covidData WHERE county = 'California'";
- }
- //Andrey 06/04/2021 16:21
- 
- 
- 
- */

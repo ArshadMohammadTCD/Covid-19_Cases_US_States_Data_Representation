@@ -10,7 +10,7 @@ Screen homeScreen;
 Button headlineFigures;
 Button statisticsAndGraphs;
 Button worldMapButton;
-Button liveUpdates;
+Button timelineCasesButton;
 Button covidUSMapButton; //free button
 Button dataTableButton; //free button
 Button treeMapButton; //free button
@@ -19,7 +19,7 @@ Screen headlineFiguresScreen;
 Button returnButton;
 Screen statsGraphsScreen;
 Screen worldMapScreen;
-Screen liveUpdatesScreen;
+TimelineCasesScreen timelineCasesScreen;
 Screen covidUSMapScreen;
 CumulativeCasesScreen dataTableScreen;
 Screen treeMapScreen;
@@ -60,8 +60,14 @@ ArrayList<Line> secondLines;
 
 //Andrey 24/03/2021 16:00
 SQLConnection myConnection;
-
-
+// Andrey 11/04/2020 18:07
+String ConvertDate(String date){
+  String result;
+  String items[] = date.split("/");
+  result = items[2]+"-"+items[1]+"-"+items[0];
+  return result;
+  
+}
 
 //Arshad 02/04/2121 22:42
 TreeMap treeMap1;
@@ -76,8 +82,8 @@ void setup() {
   defaultBackground = loadImage("Default Screen1.png");
   
   // Andrey 01/04/2021 17:28
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
+ // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
@@ -98,7 +104,7 @@ void setup() {
   worldMap = new WorldMap();
 
   // Joe : Code for the tables of data, delete later
-  recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '28/04/2020' AND county = 'Alabama'";
+  recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '2020-04-28' AND county = 'Alabama'";
   recentSamples = myConnection.runQuery(recentQuery);
   counter = 0;
   stateIndex = 0;
@@ -161,6 +167,10 @@ void keyPressed() {
   if(currentScreen == dataTableScreen){
     dataTableScreen.processKey(keyCode,key);
   }
+  //Andrey 11/04/2021 16:04
+  if(currentScreen == timelineCasesScreen){
+    timelineCasesScreen.processKey(keyCode,key);
+  }
   
 }
 
@@ -183,8 +193,8 @@ void mousePressed() {
     case EVENT_WORLD_MAP:
       currentScreen=worldMapScreen;
       break;
-    case EVENT_LIVE_UPDATES:
-      currentScreen=liveUpdatesScreen;
+    case EVENT_TIMELINE_CASES:
+      currentScreen= timelineCasesScreen;
       break;
     case EVENT_FREE_1:
       currentScreen=covidUSMapScreen;
@@ -297,9 +307,17 @@ void mousePressed() {
       currentScreen=homeScreen;
       break;
     }
-  } else if ( currentScreen == liveUpdatesScreen ) {
+  } else if ( currentScreen ==  timelineCasesScreen ) {
+     //Andrey  11/04/2021 16:03
+   timelineCasesScreen.processEvent(event);
+   
+    if(event == EVENT_UPDATE_TABLE){
+      println("Refresh");
+      timelineCasesScreen.setupData(true);
+    }
     switch(event)
     {
+      
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
       break;
@@ -317,7 +335,7 @@ void mousePressed() {
    
     if(event == EVENT_UPDATE_TABLE){
       println("Refresh");
-      dataTableScreen.setupData();
+      dataTableScreen.setupData(true);
     }
     switch(event){
     case EVENT_BACK_TO_HOME:
@@ -630,7 +648,7 @@ void setupScreens()
   headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
   statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
   worldMapButton = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
-  liveUpdates = new Button(480, 525, 960, 50, "Live Updates", buttonColor, mainFont, EVENT_LIVE_UPDATES, 889);
+  timelineCasesButton = new Button(480, 525, 960, 50, "Covid-19 Timeline cases in the US by state/area", buttonColor, mainFont, EVENT_TIMELINE_CASES, 710);
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
   dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative cases in the US by states/area", buttonColor, mainFont, EVENT_DATA_TABLE, 710);//change label if using
   treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
@@ -647,7 +665,7 @@ void setupScreens()
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
   homeScreen.addButton(worldMapButton);
-  homeScreen.addButton(liveUpdates);
+  homeScreen.addButton(timelineCasesButton);
   homeScreen.addButton(covidUSMapButton);//change if using 
   homeScreen.addButton(dataTableButton);//change if using 
   homeScreen.addButton(treeMapButton);//change if using
@@ -671,8 +689,8 @@ void setupScreens()
   worldMapScreen = new Screen(defaultBackground);
   worldMapScreen.addButton(returnButton);
   //Live Updates
-  liveUpdatesScreen = new Screen(defaultBackground);
-  liveUpdatesScreen.addButton(returnButton);
+  timelineCasesScreen = new  TimelineCasesScreen(myConnection,defaultBackground);
+  timelineCasesScreen.addButton(returnButton);
   //extra screens
   covidUSMapScreen = new Screen(defaultBackground);
   covidUSMapScreen.addButton(returnButton);

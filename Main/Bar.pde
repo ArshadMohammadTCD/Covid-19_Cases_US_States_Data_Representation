@@ -64,7 +64,7 @@ void drawBars() {
 
 void createChart() {
   // Joe 30/03/21 00:50
-  String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + STATES[stateIndex] + "' AND date = '" + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020' ORDER BY area ASC";
+  String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + STATES[stateIndex] + "' AND date = '" + ConvertDate(((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020")+"' ORDER BY area ASC";
   table = myConnection.runQuery(caseQuery);
   int xpos = 100;
   int mapRange = findMaxValue(table);

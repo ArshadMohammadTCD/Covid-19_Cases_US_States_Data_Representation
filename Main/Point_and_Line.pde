@@ -102,16 +102,18 @@ void drawLines() {
   }
 }
 
+ //<>//
+
 void createLineChart( int lineCheck, int state1, int state2 ) {
   for ( int l = 0; l <= lineCheck; l++  ) {
     graphDay = 13;
     for ( int i = 0; i < 9; i++ ) {
 
-      String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + ((l == 0) ? STATES[state1] : STATES[state2] ) + "' AND date = '" + ((graphDay < 9) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020' ORDER BY area ASC";
+      String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + ((l == 0) ? STATES[state1] : STATES[state2] ) + "' AND date = '" + ConvertDate(((graphDay < 9) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020")+"' ORDER BY area ASC";
       table = myConnection.runQuery(caseQuery);
       if ( l == 0 ) {
         firstCases.append(createTotalCases(table));
-        caseDates.append(((graphDay < 9) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020");
+        caseDates.append(ConvertDate((graphDay < 9) ? "0" : "" + graphDay + "/0" + graphMonth + "/2020"));
       } else {
         secondCases.append(createTotalCases(table));
       }

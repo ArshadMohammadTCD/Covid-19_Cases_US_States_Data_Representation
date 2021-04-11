@@ -40,7 +40,8 @@ class TreeMap {
     previousDx = new float[NUMBER_OF_STATES];
     previousDy = new float[NUMBER_OF_STATES];
     states = new String[10];
-    String query = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '01/03/2020' GROUP BY 1 ORDER BY cases DESC";
+    //String query = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-01' GROUP BY 1 ORDER BY cases DESC";
+    String query = "SELECT county,SUM(cases) AS cases FROM covidData GROUP BY 1 ORDER BY cases DESC";
     DataSource arshadsData = new DataSource(myConnection,query);
     sortCases(caseNumber, states,arshadsData.table);
     
@@ -155,12 +156,12 @@ class TreeMap {
      String query1 = "";
      if (i < 9)
      {
-       String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '0"+i+"/03/2020' GROUP BY 1 ORDER BY cases DESC";
+       String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-0"+i+"' GROUP BY 1 ORDER BY cases DESC";
        query1 = a;   
      }
      else //<>//
      {
-       String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '"+i+"/03/2020' GROUP BY 1 ORDER BY cases DESC";
+       String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-"+i+"' GROUP BY 1 ORDER BY cases DESC";
        query1 = a; 
      }
      DataSource arshadsData1 = new DataSource(myConnection,query1);

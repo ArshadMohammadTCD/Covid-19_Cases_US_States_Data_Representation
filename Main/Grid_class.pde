@@ -32,6 +32,14 @@ class Grid {
     println("rows "+ rowAmount);    
     columnAmount = testTable.getColumnCount();
     println("columns "+ columnAmount);
+    if(rowAmount == 0){
+      rowAmount = 1;
+      TableRow newRow = testTable.addRow();
+      for(int i=0; i< columnAmount; i++){
+        newRow.setString(i, "");
+      }
+      newRow.setString(0, "No data");
+    }
     grid = new Cell[rowAmount][columnAmount]; // +1 ???  
     titleCellFillRect = color(208, 179, 214);  // color rect fill  
     titleCellStroke = color(252, 255, 31);    // color rect outline

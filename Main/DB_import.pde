@@ -3,6 +3,13 @@ import samuelal.squelized.*;
 
 class DbImport {
 public Table table;
+private String ConvertDate(String date){
+  String result;
+  String items[] = date.split("/",-1);
+  result = items[2]+"-"+items[1]+"-"+items[0];
+  return result;
+  
+}
 public void Run(SQLConnection myConnection){
     // Using a stringBuilder in order to effisciently forms strings for queries
   StringBuilder stringBuilder = new StringBuilder(16000);
@@ -39,7 +46,7 @@ public void Run(SQLConnection myConnection){
   for (int k = 1; k<lines.length; k++) {
     stringBuilder.append("(");
     stringBuilder.append('"');
-    stringBuilder.append(date[k]);
+    stringBuilder.append(ConvertDate(date[k]));
     stringBuilder.append("\",\"");
     stringBuilder.append(area[k]);
     stringBuilder.append("\",\"");
