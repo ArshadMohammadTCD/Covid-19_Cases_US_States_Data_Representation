@@ -1,3 +1,4 @@
+
 //Andrey 24/03/2021  16:00
 import samuelal.squelized.*;
 //Zemyna 23/03/2021 20:15
@@ -113,7 +114,8 @@ void setup() {
   graphDay = 1;
   graphMonth = 3;
   setupLineChart();
-
+  
+  treeMap1 = new TreeMap();
 }
 
 void draw() {

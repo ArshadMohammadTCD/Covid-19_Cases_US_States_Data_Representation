@@ -1,3 +1,4 @@
+ //<>//
 import squarify.library.*;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ float CANVAS_WIDTH = 1000;    // The width of the canvas to fill
 float CANVAS_HEIGHT = 1000;   // The height of the canvas to fill
 float CANVAS_ORIGIN_X = 0;    // The x origin of the canvas to fill
 float CANVAS_ORIGIN_Y = 0;    // The y origin of the canvas to fill
-int day = 0;
+int day = 1;
 
 // SQUARIFY DATA
 
@@ -40,14 +41,14 @@ class TreeMap {
     previousDx = new float[NUMBER_OF_STATES];
     previousDy = new float[NUMBER_OF_STATES];
     states = new String[10];
-    //String query = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-01' GROUP BY 1 ORDER BY cases DESC";
-    String query = "SELECT county,SUM(cases) AS cases FROM covidData GROUP BY 1 ORDER BY cases DESC";
+    String query = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-01' GROUP BY 1 ORDER BY cases DESC";
+    //String query = "SELECT county,SUM(cases) AS cases FROM covidData GROUP BY 1 ORDER BY cases DESC";
     DataSource arshadsData = new DataSource(myConnection,query);
     sortCases(caseNumber, states,arshadsData.table);
     
     values = new ArrayList<Float>(Arrays.asList(caseNumber[0],caseNumber[1],caseNumber[2],caseNumber[3],caseNumber[4],caseNumber[5],caseNumber[6],caseNumber[7],caseNumber[8],caseNumber[9] )); // Values defining the squarified layout
     init_treeMap(treeMap);
-    stdFont=loadFont("AppleSDGothicNeo-Medium-14.vlw");
+    //stdFont=loadFont("Galvji-Bold-14.vlw");
   }
  
 
@@ -68,13 +69,13 @@ class TreeMap {
       day++;
       nextDay();
     }
-    rects = treeMap[currentTreeMap].getRects();
+    rects = treeMap[day].getRects();
     for (int i = 0; i < rects.size(); i++) {
       // Draw a rectangle
       // Arshad I made this work around and move the rectangles around Thu 25th March 17:30
       SquarifyRect r = rects.get(i);
       fill(255, 255, 255);
-      float hashColor = (256-(map(r.getValue(), 0, (int)caseNumber[0], 30, 230)));
+      float hashColor = (256-(map(r.getValue(), 0, 100000, 30, 230)));
       fill(0, hashColor ,0 ); // This will also need to change
       if (previousX[i]+20 > r.getX() && previousX[i]-20 < r.getX())
       {
@@ -127,7 +128,7 @@ class TreeMap {
       // This is just default for now im gonna have to change this to countries
       
       textAlign(CENTER, CENTER);
-      textFont(stdFont);
+     // textFont(stdFont);
       if (hashColor < 90){
         fill(255);
         
@@ -137,7 +138,7 @@ class TreeMap {
       }
       
       text("Country: "+ states[i] , r.getX() + r.getDx()/2, r.getY() + r.getDy()/2);
-      text("Covid Cases: " + (int)caseNumber[i], r.getX() + r.getDx()/2, r.getY() + (r.getDy()/2) + 20);
+      text("Covid Cases: " + r.getValue(), r.getX() + r.getDx()/2, r.getY() + (r.getDy()/2) + 20);
       textAlign(0);
     }
     noStroke();
@@ -154,12 +155,12 @@ class TreeMap {
     for (int i = 1; i<theArray.length; i++)
     {  
      String query1 = "";
-     if (i < 9)
+     if (i < 10)
      {
        String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-0"+i+"' GROUP BY 1 ORDER BY cases DESC";
        query1 = a;   
      }
-     else //<>//
+     else
      {
        String a = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-"+i+"' GROUP BY 1 ORDER BY cases DESC";
        query1 = a; 
@@ -182,7 +183,7 @@ class TreeMap {
 
   void sortCases(float theArray[], String theArray2[], Table table)
   {
-    printTable(table);
+    
     for (int i = 0; i<theArray.length; i++)
     {
       
