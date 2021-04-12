@@ -1,9 +1,11 @@
 class State {////Zemyna 01/04/2021 05:39
   PImage state;
   String stateEvent, title;
-  int xT, yT, width, height, population, totalCases, cases1M, percentageCases;
+  int xT, yT, width, height, population, totalCases, cases1M;
+  float percentageCases;
   boolean hover=false;
   color tintColor;
+  int totalUSCases=3000000;
   
   State(PImage state, int xT, int yT, int width, int height, String stateEvent)
   {
@@ -13,9 +15,9 @@ class State {////Zemyna 01/04/2021 05:39
     this.stateEvent = stateEvent;
     title = stateEvent;
     population = int(random(578759,39512223)); //random population for demonstration purposes
-    totalCases = int(random(population/4)); //random fraction of population = random case numbers
+    totalCases = getCases(queryTable());
     cases1M = int(random(population/8));  // random cases/1 mill
-    percentageCases = int(random(50)); // random percentage
+    percentageCases = getPercentage();
   }
   
   void draw()
@@ -81,4 +83,29 @@ class State {////Zemyna 01/04/2021 05:39
       return "";
     }
   }
+  
+  
+  //Zemyna 12/04/2021 06:11
+  Table queryTable()
+  {
+    String myQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = '" + stateEvent + "' GROUP BY 1 ORDER BY 1 ASC";
+    Table myTable = myConnection.runQuery(myQuery);
+    return myTable;
+  }
+  
+  int getCases(Table table)
+  {
+    int totalCases=0;
+    for(int i=0; i<table.getRowCount(); i++)
+    {
+      totalCases+=int(table.getString(i,1));
+    }
+    return totalCases;
+  }
+  
+  float getPercentage()
+  {
+    return (float)(totalCases*100)/totalUSCases;
+  }
+ 
 }

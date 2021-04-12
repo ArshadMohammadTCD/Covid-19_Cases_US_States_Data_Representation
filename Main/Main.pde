@@ -83,9 +83,9 @@ void setup() {
   defaultBackground = loadImage("Default Screen1.png");
   
   // Andrey 01/04/2021 17:28
-  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
  // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -650,9 +650,9 @@ void setupScreens()
   headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
   statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
   worldMapButton = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
-  timelineCasesButton = new Button(480, 525, 960, 50, "Covid-19 Timeline cases in the US by state/area", buttonColor, mainFont, EVENT_TIMELINE_CASES, 710);
+  timelineCasesButton = new Button(480, 525, 960, 50, "Covid-19 Timeline Cases in the US by State/Area", buttonColor, mainFont, EVENT_TIMELINE_CASES, 710);
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
-  dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative cases in the US by states/area", buttonColor, mainFont, EVENT_DATA_TABLE, 710);//change label if using
+  dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative Cases in the US by State/Area", buttonColor, mainFont, EVENT_DATA_TABLE, 695);//change label if using
   treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
   lineChartButton = new Button(480, 825, 960, 50, "Line Chart of Cases", buttonColor, mainFont, EVENT_FREE_4, 860);//change label if using
 

@@ -32,7 +32,7 @@ class Screen {
       currentButton.draw();
       }
     }
-    if (currentScreen==statsGraphsScreen)
+    if ((currentScreen==statsGraphsScreen)||(currentScreen==lineChartScreen))
     {
       //Zemyna 08/04/2021 06:43
       stroke(57, 57, 57);
