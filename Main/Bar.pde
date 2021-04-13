@@ -56,7 +56,7 @@ void drawBars() {
       fill(0);
       text("Area: " + theBars.get(i).areaName, 1050, 965); // text on the bottom right for the bar the mouse is hovering over
       text("Recorded Cases: " + theBars.get(i).population, 1500, 965); // recorded cases
-      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 925, 1015); // % of total cases in the state from that area
+      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 1050, 1015); // % of total cases in the state from that area
       stroke(0);
     }
   }
@@ -93,8 +93,8 @@ void drawChart() {
   fill(255);
   text(STATES[stateIndex], 200, 956); // title for state over the buttons
   text((graphDay + "/0" + graphMonth + "/2020"), 620, 956); 
-  //rect(910, 882, 910, 150); // rectangle for bottom right, needs to be aligned
-  fill(240,235,245);
+  rect(1030, 929, 795, 103); // rectangle for bottom right, needs to be aligned
+  fill(240, 235, 245);
   rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);
   drawBars();

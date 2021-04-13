@@ -86,8 +86,8 @@ void setup() {
   
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
- // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -107,9 +107,6 @@ void setup() {
   worldMap = new WorldMap();
 
   // Joe : Code for the tables of data, delete later
-  recentQuery = "SELECT date,area,cases FROM covidData WHERE date = '2020-04-28' AND county = 'Alabama'";
-  recentSamples = myConnection.runQuery(recentQuery);
-  counter = 0;
   stateIndex = 0;
   dateIndex = 0;
   theBars = new ArrayList();
@@ -125,15 +122,8 @@ void draw() {
   
   // Joe 25/03/21 10:20
   if (currentScreen == statsGraphsScreen) {
-    //drawTable(recentSamples);
-    //counter++;
     drawChart();
   }
-  /*
-  else {
-   counter = 0;
-   stateIndex = 0;
-   }*/
    
    if (currentScreen == lineChartScreen) {
      drawLineChart();
