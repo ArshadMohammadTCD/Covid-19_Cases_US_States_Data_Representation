@@ -5,7 +5,7 @@ class State {////Zemyna 01/04/2021 05:39
   float percentageCases;
   boolean hover=false;
   color tintColor;
-  int totalUSCases=3000000;
+  int statePopulation;
   
   State(PImage state, int xT, int yT, int width, int height, String stateEvent)
   {
@@ -105,7 +105,7 @@ class State {////Zemyna 01/04/2021 05:39
   
   float getPercentage()
   {
-    return (float)(totalCases*100)/totalUSCases;
+    return (float)(totalCases*100)/statePopulation;
   }
  
 }

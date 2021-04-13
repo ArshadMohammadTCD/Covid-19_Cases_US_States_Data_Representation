@@ -34,6 +34,7 @@ State currentState;
 PImage worldMapImage;
 WorldMap worldMap;
 Table table;
+PFont header;
 
 
 // Joe 25/03/21 10:20 : Values I made just for creating the tables of info on the screen, delete later
@@ -81,6 +82,7 @@ void setup() {
   smallFont = loadFont("ProcessingSansPro-Regular-18.vlw");
   largeFont = loadFont("ProcessingSansPro-Regular-48.vlw");
   defaultBackground = loadImage("Default Screen1.png");
+  header = loadFont("ProcessingSansPro-Regular-78.vlw");
   
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
@@ -649,12 +651,12 @@ void setupScreens()
   homeScreen = new Screen(homeScreenBackground);
   headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
   statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
-  worldMapButton = new Button(480, 450, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
+  worldMapButton = new Button(480, 825, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
   timelineCasesButton = new Button(480, 525, 960, 50, "Covid-19 Timeline Cases in the US by State/Area", buttonColor, mainFont, EVENT_TIMELINE_CASES, 710);
   covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
   dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative Cases in the US by State/Area", buttonColor, mainFont, EVENT_DATA_TABLE, 695);//change label if using
   treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
-  lineChartButton = new Button(480, 825, 960, 50, "Line Chart of Cases", buttonColor, mainFont, EVENT_FREE_4, 860);//change label if using
+  lineChartButton = new Button(480, 450, 960, 50, "Line Chart of Cases", buttonColor, mainFont, EVENT_FREE_4, 860);//change label if using
 
   // Joe 30/03/21 00:50
   forwardCounty = new Button ( 390, 935, 100, 30, " --------->", buttonColor, smallFont, 1, 390); // right button under the box with the state name

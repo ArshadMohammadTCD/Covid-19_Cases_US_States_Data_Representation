@@ -46,6 +46,41 @@ class Screen {
       currentButton.draw();
       }
     }
+    //Zemyna 13/04/2021 07:10
+    if (currentScreen==timelineCasesScreen)
+    {
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(70,330,1020,659);
+      rect(70,200,1020,130);
+      rect(1090,200,755,789);
+      fill(107, 108, 147);
+      rect(80, 340, 1000, 639);
+      rect(1100,210,735,769);
+      rect(80,210,1000,110);
+      
+      fill(193,193,193);
+      rect(1520,460,155,250);
+      fill(107, 108, 147);
+      rect(1530,470,135,230);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
+      //header
+      stroke(57, 57, 57);
+      textFont(header);
+      fill(193, 193, 193);
+      rect(70, 70, 1470, 103);
+      fill(209, 209, 209);
+      rect(80, 80, 1450, 83);
+      fill(46, 46, 46);
+      textSize(78);
+      text("Covid-19 Timeline Cases by State/Area", 100, 150);
+      
+      
+    }
   }
 
   int getEvent()

@@ -26,13 +26,13 @@ class TimelineCasesScreen extends Screen {
     selected_event = EVENT_NULL;
 
 
-    countyInput = new TextWidget(200, 147, 100, 30, " All counties", color(200), EVENT_TEXTWIDGET_2, 30, false);
+    countyInput = new TextWidget(240, 450, 100, 30, " All counties", color(200), EVENT_TEXTWIDGET_2, 30, false);
     this.addTextWidget(countyInput);
-    areaInput =  new TextWidget(760, 147, 200, 30, " All areas", color(200), EVENT_TEXTWIDGET_4, 30, false);
+    areaInput =  new TextWidget(620, 450, 200, 30, " All areas", color(200), EVENT_TEXTWIDGET_4, 30, false);
     this.addTextWidget(areaInput);
-    dateFrom = new TextWidget(150, 100, 80, 30, "28/01/2020", color(255), EVENT_TEXTWIDGET_1, 10, true);
+    dateFrom = new TextWidget(1555, 530, 80, 30, "28/01/2020", color(255), EVENT_TEXTWIDGET_1, 10, true);
     this.addTextWidget(dateFrom);
-    dateTo = new TextWidget(270, 100, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_3, 10, true);
+    dateTo = new TextWidget(1555, 640, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_3, 10, true);
     this.addTextWidget(dateTo);
 
 
@@ -78,13 +78,13 @@ class TimelineCasesScreen extends Screen {
       println("connection null");
     }
     casesByStateDs = new DataSource(connection, queryByState);
-    casesByState = new Grid(casesByStateDs.table, 50, 200, 600, 210, EVENT_GRID_1);
+    casesByState = new Grid(casesByStateDs.table, 240, 520, 600, 400, EVENT_GRID_1);
     gridList.add(casesByState);
     casesByAreaDs = new DataSource(connection, queryByArea);
-    casesByArea = new Grid(casesByAreaDs.table, 650, 200, 600, 210, EVENT_GRID_2);
+    casesByArea = new Grid(casesByAreaDs.table, 630, 520, 600, 400, EVENT_GRID_2);
     gridList.add(casesByArea);
     casesTimelineDs = new DataSource(connection, queryTimeline);
-    casesTimeline = new Grid(casesTimelineDs.table, 50, 550, 600, 400, EVENT_GRID_3);
+    casesTimeline = new Grid(casesTimelineDs.table, 1200, 300, 600, 600, EVENT_GRID_3);
     gridList.add(casesTimeline);
   }
 
@@ -114,7 +114,7 @@ class TimelineCasesScreen extends Screen {
   }
 
   void draw() {
-
+    
     super.draw();
     drawFocus();
     textSize(14);    
@@ -127,14 +127,28 @@ class TimelineCasesScreen extends Screen {
     for (int i=0; i< gridList.size(); i++)
     {
       Grid currentGrid = (Grid) gridList.get(i);
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(currentGrid.topx-10, currentGrid.y-10, currentGrid.width+20, currentGrid.height+20);
       currentGrid.draw();
     }
-    textSize(20);
-    text("Date from:", 50, 125);
-    text(" to:", 230, 125);
-    text("Selected county:", 50, 170);
-    text("Select area:", 650, 170);
-    text("Select desired county/area \nusing up/down keys \nand press Enter to choose it.", 350, 250);
+    //textSize(20);
+    fill(237, 237, 237);
+    textFont(largeFont);
+    textSize(24);
+    text("Date from:", 1545, 500);
+    text(" to:", 1575, 610);
+    text("Selected County:", 240, 420);
+    text("Selected Area:", 620, 420);
+    textSize(26);
+    text("Select your desired County/Area by using the up/down keys and press Enter to \nchoose it and view the Cases Timeline.", 100, 250);
+    fill(237, 237, 237);
+    stroke(57, 57, 57);
+    rect(100, 300, 950, 3);
+    rect(1130, 250, 660, 3);
+    rect(1130, 950, 660, 3);
+    rect(100, 370, 950, 3);
+    rect(100, 950, 950, 3);
   }
 
   int getEvent()
