@@ -93,16 +93,6 @@ class State {////Zemyna 01/04/2021 05:39
     return myTable;
   }
   
-  int getCases(Table table)
-  {
-    int totalCases=0;
-    for(int i=0; i<table.getRowCount(); i++)
-    {
-      totalCases+=int(table.getString(i,1));
-    }
-    return totalCases;
-  }
-  
   float getPercentage()
   {
     return (float)(totalCases*100)/statePopulation;

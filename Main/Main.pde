@@ -714,7 +714,7 @@ void drawHeadlineFiguresScreen()
 {
   //header
     stroke(57, 57, 57);
-    textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
+    textFont(header);
     fill(193, 193, 193);
     rect(70, 70, 1470, 103);
     fill(209, 209, 209);
@@ -741,9 +741,9 @@ void drawHeadlineFiguresScreen()
     //text
     fill(237, 237, 237);
     textSize(46);
-    text("Total Confirmed Cases in the World", 170, 280);
-    text("Total Deaths from Covid-19 Globally", 200, 670);
-    text("Total Vaccinations Administered Globally", 1000, 280);
+    text("Total Confirmed Cases in the US", 180, 280);
+    text("Total Confirmed Cases in Washington DC", 120, 670);
+    text("Total Confirmed Cases in California", 1030, 280);
     text("Last Updated:", 1250, 670);
     fill(193,193,193);
     rect(120,300,780,3);
@@ -751,14 +751,48 @@ void drawHeadlineFiguresScreen()
     rect(1000,700,780,3);
     rect(1000,300,780,3);
     //random information
-    String totalCases = "132,000,000";
-    String totalDeaths = "2,870,000";
-    String totalVaccinations = "693,000,000";
-    String dateUpdated = "06/04/2021";
+    int totalCases = getTotalUSCases();
+    String formattedTotalCases = String.format("%,d", totalCases);
+    String myQuery = "SELECT date, cases FROM covidData WHERE county = 'Maryland' AND area = 'Washington'";
+    Table myTable = myConnection.runQuery(myQuery);
+    int totalWashington = getCases(myTable);
+    String formattedWashington = String.format("%,d", totalWashington);
+    String myCaliQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = 'California' GROUP BY 1 ORDER BY 1 ASC";
+    Table myCaliTable = myConnection.runQuery(myCaliQuery);
+    int totalCali = getCases(myCaliTable); 
+    String formattedCali = String.format("%,d", totalCali);
+    String myLastDateQuery = "SELECT date FROM covidData WHERE country = 'United States'";
+    Table lastDateTable = myConnection.runQuery(myLastDateQuery);
+    String date = (lastDateTable.getString(lastDateTable.getRowCount()-1,0));
     textSize(78);
     fill(237, 237, 237);
-    text(totalCases,300,450);
-    text(totalDeaths,350,850);
-    text(totalVaccinations,1200,450);
-    text(dateUpdated,1210,850);
+    text(formattedTotalCases,340,450);
+    text(formattedWashington,400,850);
+    text(formattedCali,1250,450);
+    text(date,1210,850);
 }
+
+//Zemyna 13/04/2021
+int getTotalUSCases()
+{
+  int totalCases=0;
+  for(int i=0; i<STATES.length; i++)
+  {
+    String currentState = STATES[i];
+    String myQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = '" + currentState + "' GROUP BY 1 ORDER BY 1 ASC";
+    Table myTable = myConnection.runQuery(myQuery);
+    int stateCases = getCases(myTable);
+    totalCases+=stateCases;
+  }
+  return totalCases;
+}
+
+int getCases(Table table)
+  {
+    int totalCases=0;
+    for(int i=0; i<table.getRowCount(); i++)
+    {
+      totalCases+=int(table.getString(i,1));
+    }
+    return totalCases;
+  }

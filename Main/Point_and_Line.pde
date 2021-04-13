@@ -174,7 +174,7 @@ void drawLineChart() {
   line(100, 230, 100, 900); // line for y - axis of the bar chart
   line(100, 900, 1770, 900); // line for the x - axis of the bar chart
   stroke(57, 57, 57);
-  textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
+  textFont(header);
   fill(193, 193, 193);
   rect(70, 70, 1470, 103); // outer rectangle of header
   fill(209, 209, 209);

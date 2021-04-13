@@ -159,7 +159,7 @@ void drawMapTabs()
 {
   //header
   stroke(57, 57, 57);
-  textFont(loadFont("ProcessingSansPro-Regular-78.vlw"));
+  textFont(header);
   fill(193, 193, 193);
   rect(70, 70, 1470, 103);
   fill(209, 209, 209);
