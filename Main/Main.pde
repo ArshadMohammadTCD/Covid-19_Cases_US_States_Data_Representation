@@ -750,7 +750,7 @@ void drawHeadlineFiguresScreen()
     rect(120,700,780,3);
     rect(1000,700,780,3);
     rect(1000,300,780,3);
-    //random information
+    //Zemyna 13/04/2021 09:45
     int totalCases = getTotalUSCases();
     String formattedTotalCases = String.format("%,d", totalCases);
     String myQuery = "SELECT date, cases FROM covidData WHERE county = 'Maryland' AND area = 'Washington'";
