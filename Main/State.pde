@@ -5,7 +5,6 @@ class State {////Zemyna 01/04/2021 05:39
   float percentageCases;
   boolean hover=false;
   color tintColor;
-  int statePopulation;
   
   State(PImage state, int xT, int yT, int width, int height, String stateEvent)
   {
@@ -14,9 +13,9 @@ class State {////Zemyna 01/04/2021 05:39
     this.width = width; this.height = height;
     this.stateEvent = stateEvent;
     title = stateEvent;
-    population = int(random(578759,39512223)); //random population for demonstration purposes
+    population = int(random(278759,39512223)); //random population for demonstration purposes
     totalCases = getCases(queryTable());
-    cases1M = int(random(population/8));  // random cases/1 mill
+    cases1M = int(random(300,4000)); //random
     percentageCases = getPercentage();
   }
   
@@ -95,7 +94,21 @@ class State {////Zemyna 01/04/2021 05:39
   
   float getPercentage()
   {
-    return (float)(totalCases*100)/statePopulation;
+    return (float)(totalCases*100)/getTotalUSCases();
   }
  
+  //Zemyna 14/04/2021 10:22
+  int getTotalUSCases()
+  {
+    int totalCases=0;
+    for(int i=0; i<STATES.length; i++)
+    {
+      String currentState = STATES[i];
+      String myQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = '" + currentState + "' GROUP BY 1 ORDER BY 1 ASC";
+      Table myTable = myConnection.runQuery(myQuery);
+      int stateCases = getCases(myTable);
+      totalCases+=stateCases;
+    }
+    return totalCases;
+  }
 }

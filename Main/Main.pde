@@ -86,8 +86,8 @@ void setup() {
   
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -751,15 +751,12 @@ void drawHeadlineFiguresScreen()
     Table myCaliTable = myConnection.runQuery(myCaliQuery);
     int totalCali = getCases(myCaliTable); 
     String formattedCali = String.format("%,d", totalCali);
-    String myLastDateQuery = "SELECT date FROM covidData WHERE country = 'United States'";
-    Table lastDateTable = myConnection.runQuery(myLastDateQuery);
-    String date = (lastDateTable.getString(lastDateTable.getRowCount()-1,0));
     textSize(78);
     fill(237, 237, 237);
     text(formattedTotalCases,340,450);
     text(formattedWashington,400,850);
     text(formattedCali,1250,450);
-    text(date,1210,850);
+    text("2020-04-28",1210,850);
 }
 
 //Zemyna 13/04/2021

@@ -78,8 +78,35 @@ class Screen {
       fill(46, 46, 46);
       textSize(78);
       text("Covid-19 Timeline Cases by State/Area", 100, 150);
-      
-      
+    }
+    
+    //Zemyna 14/04/2021 10:47
+    if ((currentScreen==dataTableScreen))
+    {
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(70,200,591.6,789);
+      rect(661.6,200,591.6,789);
+      rect(1253.2,200,591.6,789);
+      fill(107, 108, 147);
+      rect(80, 210, 571.6, 769);
+      rect(671.6,210,571.6,769);
+      rect(1263.2,210,571.6,769);
+      //header
+      stroke(57, 57, 57);
+      textFont(header);
+      fill(193, 193, 193);
+      rect(70, 70, 1470, 103);
+      fill(209, 209, 209);
+      rect(80, 80, 1450, 83);
+      fill(46, 46, 46);
+      textSize(78);
+      text("Covid-19 Cumulative Cases by State/Area", 100, 150);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
     }
   }
 

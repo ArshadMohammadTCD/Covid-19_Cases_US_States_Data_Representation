@@ -21,17 +21,17 @@ class CumulativeCasesScreen extends Screen {
     connection = myConnection;
     selected_event = EVENT_NULL;
 
-    dateInput = new TextWidget(150, 100, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_1, 10, true);
+    dateInput = new TextWidget(910, 620, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_1, 10, true);
     this.addTextWidget(dateInput);
-    countyInput = new TextWidget(650, 240, 100, 30, "Alabama", color(200), EVENT_TEXTWIDGET_2, 30, false);
+    countyInput = new TextWidget(1475, 265, 100, 30, "Alabama", color(200), EVENT_TEXTWIDGET_2, 30, false);
     this.addTextWidget(countyInput);
 
     String queryTotal = "SELECT SUM(cases) AS cases FROM covidData WHERE date < '"+ dateInput.label + "'";    
     casesTotalDs = new DataSource(connection, queryTotal);
-    totalInput = new TextWidget(150, 240, 100, 30, casesTotalDs.table.getString(0, 0), color(200), EVENT_TEXTWIDGET_3, 30, false);
+    totalInput = new TextWidget(260, 265, 100, 30, casesTotalDs.table.getString(0, 0), color(200), EVENT_TEXTWIDGET_3, 30, false);
     this.addTextWidget(totalInput);
     
-    updateInfo = new Button(650, 100, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 670);
+    updateInfo = new Button(850, 800, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 870);
     addButton(updateInfo);
 
     setupData(false);
@@ -52,10 +52,10 @@ class CumulativeCasesScreen extends Screen {
       println("connection null");
     }
     casesByStateDs = new DataSource(connection, queryByState);
-    casesByState = new Grid(casesByStateDs.table, 50, 300, 600, 600, EVENT_GRID_1);
+    casesByState = new Grid(casesByStateDs.table, 190, 330, 600, 600, EVENT_GRID_1);
     gridList.add(casesByState);
     casesByAreaDs = new DataSource(connection, queryByArea);
-    casesByArea = new Grid(casesByAreaDs.table, 650, 300, 600, 600, EVENT_GRID_2);
+    casesByArea = new Grid(casesByAreaDs.table, 1440, 330, 600, 600, EVENT_GRID_2);
     gridList.add(casesByArea);
   }
 
@@ -91,13 +91,30 @@ class CumulativeCasesScreen extends Screen {
     for (int i=0; i< gridList.size(); i++)
     {
       Grid currentGrid = (Grid) gridList.get(i);
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(currentGrid.topx-10, currentGrid.y-10, currentGrid.width+20, currentGrid.height+20);
       currentGrid.draw();
     }
-    textSize(20);
-    text("Date :", 90, 125);
-    text("Total cases over \nall counties :",10,240);
-    text("Total cases over \nall area's in the county :",450,240);
-    text("Select a county using up/down keys \nand press enter to choose it.",50,935);
+    //textSize(20);
+    //textSize(20);
+    fill(237, 237, 237);
+    textFont(largeFont);
+    textSize(24);
+    text("Date :", 920, 600);
+    text("Total cases over all counties :",170,250);
+    text("Total cases over all area's in the county :",1340,250);
+    text("Select a county on the left table using the up/down \n              keys, and press Enter to choose it.",700,300);
+    text("Select a date using the text box below and click the \n 'Update Table' button below to see the cumulative \n      cases in your chosen state and area for your \n                              selected date.",700,400);
+    fill(237, 237, 237);
+    stroke(57, 57, 57);
+    rect(700, 245, 510, 3);
+    rect(700, 355, 510, 3);
+    rect(700, 520, 510, 3);
+    rect(700, 570, 510, 3);
+    rect(700, 665, 510, 3);
+    rect(700, 865, 510, 3);
+    rect(700, 775, 510, 3);
   }
 
   int getEvent()
