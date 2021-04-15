@@ -67,11 +67,11 @@ class CumulativeCasesScreen extends Screen {
       break;
       case EVENT_GRID_1:
         fill(94, 150, 245);        
-        rect(casesByState.topx-4,casesByState.y-4, casesByState.width+8, casesByState.height+8);        
+        rect(casesByState.topx-16,casesByState.y-16, casesByState.width+32, casesByState.height+32);        
       break;
       case EVENT_GRID_2:
         fill(94, 150, 245);
-        rect(casesByArea.topx-4,casesByArea.y-4, casesByArea.width+8, casesByArea.height+8);        
+        rect(casesByArea.topx-16,casesByArea.y-16, casesByArea.width+32, casesByArea.height+32);        
       break;
     }  
     

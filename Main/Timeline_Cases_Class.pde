@@ -35,10 +35,6 @@ class TimelineCasesScreen extends Screen {
     dateTo = new TextWidget(1555, 640, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_3, 10, true);
     this.addTextWidget(dateTo);
 
-
-
-
-
     updateInfo = new Button(650, 100, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 670);
     addButton(updateInfo);
 
@@ -100,16 +96,19 @@ class TimelineCasesScreen extends Screen {
       break;
 
     case EVENT_GRID_1:
+    println("Grid1");
       fill(94, 150, 245);        
-      rect(casesByState.topx-4, casesByState.y-4, casesByState.width+8, casesByState.height+8);        
+      rect(casesByState.topx-16, casesByState.y-16, casesByState.width+32, casesByState.height+32);        
       break;
     case EVENT_GRID_2:
+    println("Grid2");
       fill(94, 150, 245);
-      rect(casesByArea.topx-4, casesByArea.y-4, casesByArea.width+8, casesByArea.height+8);        
+      rect(casesByArea.topx-16, casesByArea.y-16, casesByArea.width+32, casesByArea.height+32);        
       break;
     case EVENT_GRID_3:
+      println("Grid3");
       fill(94, 150, 245);
-      rect(casesTimeline.topx-4, casesTimeline.y-4, casesTimeline.width+8, casesTimeline.height+8);
+      rect(casesTimeline.topx-16, casesTimeline.y-16, casesTimeline.width+32, casesTimeline.height+32);
     }
   }
 
@@ -132,7 +131,7 @@ class TimelineCasesScreen extends Screen {
       rect(currentGrid.topx-10, currentGrid.y-10, currentGrid.width+20, currentGrid.height+20);
       currentGrid.draw();
     }
-    //textSize(20);
+    
     fill(237, 237, 237);
     textFont(largeFont);
     textSize(24);
@@ -149,6 +148,7 @@ class TimelineCasesScreen extends Screen {
     rect(1130, 950, 660, 3);
     rect(100, 370, 950, 3);
     rect(100, 950, 950, 3);
+     
   }
 
   int getEvent()
