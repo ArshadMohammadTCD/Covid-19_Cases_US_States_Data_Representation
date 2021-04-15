@@ -1,7 +1,7 @@
-// Joe 09/04/2021 00:53 
+// Joe 09/04/2021 00:53  //<>//
 
 class Point {
-  
+
   String pointDate;
   int population;
   float speed;
@@ -10,7 +10,7 @@ class Point {
   int counter;
   color pointColour;
   boolean mouseOver;
-  
+
   Point( int population, float speed, int xpos, color pointColour, String pointDate ) {
     this.population = population;
     this.pointDate = pointDate;
@@ -20,7 +20,7 @@ class Point {
     this.counter = 0;
     this.pointColour = pointColour;
   }
-  
+
   void draw() {
     if (mouseOver) {
       stroke(255);
@@ -37,21 +37,20 @@ class Point {
       }
     }
   }
-  
 }
 
 class Line {
-  
+
   Point point1;
   Point point2;
   color lineColour;
-  
+
   Line ( Point p1, Point p2, color lineColour ) {
     this.point1 = p1;
     this.point2 = p2;
     this.lineColour = lineColour;
   }
-  
+
   void draw() {
     stroke(lineColour);
     line( point1.xpos, point1.ypos, point2.xpos, point2.ypos );
@@ -68,9 +67,16 @@ void setupLineChart() {
   firstCases = new IntList();
   secondCases = new IntList();
 
+  firstState = 0;
+  secondState = 1;
+  firstDay = 13;
+  secondDay = 14;
+  firstMonth = 3;
+  secondMonth = 3;
+  dateCount = 2;
+
   graphDay = 13;
   graphMonth = 3;
-  createLineChart(1, 3, 44);
 }
 
 void createPoint(ArrayList<Point> thePoints, int population, float speed, int xpos, color pointColour, String pointDate) {
@@ -102,32 +108,49 @@ void drawLines() {
   }
 }
 
- //<>//
 
-void createLineChart( int lineCheck, int state1, int state2 ) {
-  for ( int l = 0; l <= lineCheck; l++  ) {
-    graphDay = 13;
-    for ( int i = 0; i < 9; i++ ) {
 
-      String caseQuery = "SELECT cases, area FROM covidData WHERE county = '" + ((l == 0) ? STATES[state1] : STATES[state2] ) + "' AND date = '" + ConvertDate(((graphDay < 9) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020")+"' ORDER BY area ASC";
+void createLineChart( int dateCount, int state1, int state2 ) {
+  String caseQuery = "";
+  for ( int l = 0; l <= 1; l++  ) {
+    int lineChartDay = firstDay;
+    int lineChartMonth = firstMonth;
+    for ( int i = 0; i < dateCount; i++ ) {
+
+      caseQuery = "SELECT cases, area FROM covidData WHERE county = '" +  (( l == 0 ? STATES[state1] : STATES[state2])+ "' AND date = '" 
+        + "2020-0" + lineChartMonth + "-" + (lineChartDay < 10 ? "0" : "") + lineChartDay + "'");
+          //+ ConvertDate(((lineChartDay >= 10) ? "" : "0") + lineChartDay + "/0" + lineChartMonth + "/2020")+"' ORDER BY area ASC";
       table = myConnection.runQuery(caseQuery);
       if ( l == 0 ) {
         firstCases.append(createTotalCases(table));
-        caseDates.append(ConvertDate((graphDay < 9) ? "0" : "" + graphDay + "/0" + graphMonth + "/2020"));
+        caseDates.append("2020-0" + lineChartMonth + "-" + (lineChartDay < 10 ? "0" : "") + lineChartDay + "'");
+        //caseDates.append(ConvertDate((lineChartDay < 10) ? "0" : "" + lineChartDay + "/0" + lineChartMonth + "/2020"));
       } else {
         secondCases.append(createTotalCases(table));
       }
-      graphDay++;
+      lineChartDay++;
+      if (lineChartDay > 31 && (lineChartMonth == 1 || lineChartMonth == 3)) {
+        lineChartMonth++;
+        lineChartDay = 1;
+      }
+      else if ( lineChartDay > 29 && lineChartMonth == 2 ) {
+        lineChartMonth++;
+        lineChartDay = 1;
+      }
+      // the last else if will just stop the loop if it gets to the end of the dataset
+      else if ( lineChartDay > 28 && lineChartMonth == 4 ) {
+        dateCount = i;
+      }
     }
   }
- 
+
   int mapRange = findMaxValue(firstCases, secondCases);
   float mapWidth = 1670.0/firstCases.size();
 
-  for ( int l = 0; l <= lineCheck; l++ ) {
+  for ( int l = 0; l <= 1; l++ ) {
     int xpos = 100;
 
-    
+
     if ( l == 0 ) {
 
       for (int i = 0; i < firstCases.size(); i++)
@@ -139,9 +162,7 @@ void createLineChart( int lineCheck, int state1, int state2 ) {
       for ( int i = 0; i < firstPoints.size() - 1; i++ ) {
         createLine( firstLines, firstPoints.get(i), firstPoints.get(i + 1), color (255, 0, 0));
       }
-    }
-
-    else {
+    } else {
       for (int i = 0; i < secondCases.size(); i++)
       {
         float measurePoint = map(secondCases.get(i), 0, mapRange, 0, 600);
@@ -159,13 +180,16 @@ void drawLineChart() {
   // Joe 30/03/21 00:50
   stroke(0);
   fill(83, 83, 83);
-  rect(190, 929, 200, 35); // rectangle for the state
-  rect(610, 929, 200, 35); // rectangle for the date
+  rect(190, 929, 200, 35); // rectangle for the first state
+  rect(490, 929, 200, 35); // rectangle for the second state
+  rect(850, 929, 200, 35); // rectangle for the first date
+  rect(1250, 929, 200, 35);// rectangle for the second date
   fill(255);
-  text(STATES[stateIndex], 200, 956); // title for state over the buttons
-  text((graphDay + "/0" + graphMonth + "/2020"), 620, 956); 
-  //rect(910, 882, 910, 150); // rectangle for bottom right, needs to be aligned
-  fill(240,235,245);
+  text(STATES[firstState], 200, 956); // title for state over the buttons
+  text(STATES[secondState], 500, 956); 
+  text(((firstDay < 10) ? "0" : "") + firstDay + "/0" + firstMonth + "/2020", 860, 956);
+  text((( secondDay < 10) ? "0" : "") + secondDay + "/0" + secondMonth + "/2020", 1260, 956);
+  fill(240, 235, 245);
   rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);
   drawPoints();
@@ -180,8 +204,9 @@ void drawLineChart() {
   fill(209, 209, 209);
   rect(80, 80, 1450, 83); // inner rectangle of header
   fill(46, 46, 46);
-  textSize(78); // size of the text
-  text("Cases in " + STATES[stateIndex] + " at " + ((graphDay < 10) ? "0" : "") + graphDay + "/0" + graphMonth + "/2020", 100, 150); // header of the title
+  textSize(50); // size of the text
+  text("Case trend of " + STATES[firstState] + " and " + STATES[secondState] + " from " + ((firstDay < 10) ? "0" : "") + firstDay + "/0" + firstMonth + "/2020 to " 
+        + ((secondDay < 10) ? "0" : "" ) + secondDay + "/0" + secondMonth + "/2020", 100, 150); // header of the title
 }
 
 
@@ -210,15 +235,15 @@ int createTotalCases ( Table table ) {
 }
 
 void emptyLineChart() {
-  for( int i = firstPoints.size() - 1; i >= 0; i-- ) {
+  for ( int i = firstPoints.size() - 1; i >= 0; i-- ) {
     firstPoints.remove(i);
     secondPoints.remove(i);
     if ( i > 0 ) {
-    firstLines.remove(i - 1);
-    secondLines.remove(i - 1);
-  }
+      firstLines.remove(i - 1);
+      secondLines.remove(i - 1);
+    }
     caseDates.remove(i);
     firstCases.remove(i);
     secondCases.remove(i);
-  } 
+  }
 }

@@ -50,8 +50,29 @@ Button forwardDay;
 Button backwardDay;
 Button forwardMonth;
 Button backwardMonth;
+// Buttons for the Line Chart
+Button forwardFirstCounty;
+Button forwardSecondCounty;
+Button backwardFirstCounty;
+Button backwardSecondCounty;
+Button forwardFirstDay;
+Button forwardSecondDay;
+Button backwardFirstDay;
+Button backwardSecondDay;
+Button forwardFirstMonth;
+Button forwardSecondMonth;
+Button backwardFirstMonth;
+Button backwardSecondMonth;
+
 int graphDay;
 int graphMonth;
+int firstDay;
+int secondDay;
+int firstMonth;
+int secondMonth;
+int firstState;
+int secondState;
+int dateCount;
 IntList firstCases;
 IntList secondCases;
 StringList caseDates;
@@ -63,12 +84,11 @@ ArrayList<Line> secondLines;
 //Andrey 24/03/2021 16:00
 SQLConnection myConnection;
 // Andrey 11/04/2020 18:07
-String ConvertDate(String date){
+String ConvertDate(String date) {
   String result;
   String items[] = date.split("/");
   result = items[2]+"-"+items[1]+"-"+items[0];
   return result;
-  
 }
 
 //Arshad 02/04/2121 22:42
@@ -83,18 +103,18 @@ void setup() {
   largeFont = loadFont("ProcessingSansPro-Regular-48.vlw");
   defaultBackground = loadImage("Default Screen1.png");
   header = loadFont("ProcessingSansPro-Regular-78.vlw");
-  
+
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
   // Using a stringBuilder in order to effisciently forms strings for queries 
- DbImport job = new DbImport();
+  DbImport job = new DbImport();
   job.Run(myConnection);
-  
+
   setupScreens();
   currentScreen=homeScreen;
   //Zemyna 01/04/2021 05:23
@@ -110,24 +130,22 @@ void setup() {
   stateIndex = 0;
   dateIndex = 0;
   theBars = new ArrayList();
-  graphDay = 1;
-  graphMonth = 3;
   setupLineChart();
-  
+
   treeMap1 = new TreeMap();
 }
 
 void draw() {
   currentScreen.draw();
-  
+
   // Joe 25/03/21 10:20
   if (currentScreen == statsGraphsScreen) {
     drawChart();
   }
-   
-   if (currentScreen == lineChartScreen) {
-     drawLineChart();
-   }
+
+  if (currentScreen == lineChartScreen) {
+    drawLineChart();
+  }
 
   //Zemyna 01/04/2021 05:23
   if (currentScreen==covidUSMapScreen)
@@ -150,7 +168,7 @@ void draw() {
   {
     worldMap.draw();
   }
-  
+
   if (currentScreen == headlineFiguresScreen)
   {
     drawHeadlineFiguresScreen();
@@ -158,14 +176,13 @@ void draw() {
 }
 //Andrey 01/04/2021 14:34
 void keyPressed() {
-  if(currentScreen == dataTableScreen){
-    dataTableScreen.processKey(keyCode,key);
+  if (currentScreen == dataTableScreen) {
+    dataTableScreen.processKey(keyCode, key);
   }
   //Andrey 11/04/2021 16:04
-  if(currentScreen == timelineCasesScreen){
-    timelineCasesScreen.processKey(keyCode,key);
+  if (currentScreen == timelineCasesScreen) {
+    timelineCasesScreen.processKey(keyCode, key);
   }
-  
 }
 
 void mousePressed() {
@@ -201,6 +218,7 @@ void mousePressed() {
       break;
     case EVENT_FREE_4:
       currentScreen=lineChartScreen;
+      createLineChart(dateCount, firstState, secondState);
       break;
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
@@ -302,16 +320,16 @@ void mousePressed() {
       break;
     }
   } else if ( currentScreen ==  timelineCasesScreen ) {
-     //Andrey  11/04/2021 16:03
-   timelineCasesScreen.processEvent(event);
-   
-    if(event == EVENT_UPDATE_TABLE){
+    //Andrey  11/04/2021 16:03
+    timelineCasesScreen.processEvent(event);
+
+    if (event == EVENT_UPDATE_TABLE) {
       println("Refresh");
       timelineCasesScreen.setupData(true);
     }
     switch(event)
     {
-      
+
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
       break;
@@ -324,14 +342,14 @@ void mousePressed() {
       break;
     }
   } else if ( currentScreen == dataTableScreen ) {
-  // Start Andrey  06/04/2021
+    // Start Andrey  06/04/2021
     dataTableScreen.processEvent(event);
-   
-    if(event == EVENT_UPDATE_TABLE){
+
+    if (event == EVENT_UPDATE_TABLE) {
       println("Refresh");
       dataTableScreen.setupData(true);
     }
-    switch(event){
+    switch(event) {
     case EVENT_BACK_TO_HOME:
       println("CurrentScreen Main");
       currentScreen=homeScreen;
@@ -347,14 +365,143 @@ void mousePressed() {
       break;
     }
   }
-  
+
   // Joe 09/04/2021 00:51
-  if (currentScreen==lineChartScreen) {
+  else if (currentScreen==lineChartScreen) {
     switch(event) {
-      case EVENT_BACK_TO_HOME:
-        currentScreen=homeScreen;
+    case EVENT_BACK_TO_HOME:
+      currentScreen=homeScreen;
+      emptyLineChart();
+      break;
+    case 1:
+      if ( firstState < STATES.length - 1) {
         emptyLineChart();
-        break;
+        firstState++;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+    case 2:
+      if ( firstState > 0 ) {
+        emptyLineChart();
+        firstState--;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+    case 3:
+      if ( secondState < STATES.length - 1) {
+        emptyLineChart();
+        secondState++;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+    case 4:
+      if ( secondState > 0 ) {
+        emptyLineChart();
+        secondState--;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+      // forward first day
+    case 5:
+      if ( dateCount > 2 && (firstDay < 31 && (firstMonth == 1 || firstMonth == 3 )) || (firstDay < 29 && firstMonth == 2) || (firstDay < 28 && firstMonth == 4 )) {
+        emptyLineChart();
+        firstDay++;
+        dateCount--;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+      // backward first day
+    case 6:
+      if ( firstMonth == 1 && firstDay > 21) {
+        emptyLineChart();
+        firstDay--;
+        dateCount++;
+        createLineChart(dateCount, firstState, secondState);
+      } else if ( firstDay > 1 ) {
+        emptyLineChart();
+        firstDay--;
+        dateCount++;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+      // forward first month
+    case 7:
+      if ( secondDay > 1 && secondMonth > firstMonth ) {
+        emptyLineChart();
+        firstMonth++;
+        firstDay = 1;
+        dateCount = secondDay - firstDay;
+        createLineChart( dateCount, firstState, secondState);
+      }
+      break;
+      // backward first month
+    case 8:
+      if ( firstMonth == 3 ) {
+        emptyLineChart();
+        firstMonth--;
+        dateCount += firstDay;
+        firstDay = 29;
+        createLineChart( dateCount, firstState, secondState);
+      } else if ( firstMonth == 2 || firstMonth == 4 ) {
+        emptyLineChart();
+        firstMonth--;
+        dateCount += firstDay;
+        firstDay = 31;
+        createLineChart( dateCount, firstState, secondState);
+      }
+      break;
+      // forward second day
+    case 10:
+      if ((secondDay < 31 && (secondMonth == 1 || secondMonth == 3 )) || (secondDay < 29 && secondMonth == 2) || (secondDay < 28 && secondMonth == 4 ) ) {
+        emptyLineChart();
+        secondDay++;
+        dateCount++;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+      // backward second day
+    case 11:
+      if ( dateCount > 2 && ((secondDay > 21 && secondMonth == 1) || (secondDay > 1 && (secondMonth == 2 || secondMonth == 3 || secondMonth == 4 )))) {
+        emptyLineChart();
+        secondDay--;
+        dateCount--;
+        createLineChart(dateCount, firstState, secondState);
+      } 
+      break;
+      // forward second month
+    case 12:
+      if ( secondMonth == 1 || secondMonth == 3) {
+        emptyLineChart();
+        secondMonth++; 
+        dateCount += ( 32 - secondDay);
+        secondDay = 1;
+        createLineChart(dateCount, firstState, secondState);
+      } else if ( secondMonth == 2 ) {
+        emptyLineChart();
+        secondMonth++;
+        dateCount += ( 30 - secondDay );
+        secondDay = 1;
+        createLineChart(dateCount, firstState, secondState);
+      }
+      break;
+      // backward second month
+    case 13:
+      if ( secondMonth > firstMonth && ( firstMonth == 2 && firstDay < 29 )) {
+        emptyLineChart();
+        secondMonth--;
+        dateCount -= secondDay;
+        secondDay = 29;
+        createLineChart(dateCount, firstState, secondState);
+      } 
+      else if ( secondMonth > firstMonth && ( (firstMonth == 1 || firstMonth == 3 ) && firstDay < 31 )) {
+        emptyLineChart();
+        secondMonth--;
+        dateCount -= secondDay;
+        secondDay = 31;
+        createLineChart(dateCount, firstState, secondState);
+      }
+
+      break;
     }
   }
   // End Joe
@@ -656,6 +803,21 @@ void setupScreens()
   forwardMonth = new Button ( 860, 935, 50, 30, "->>", buttonColor, smallFont, 5, 865); // right most button under the box with the date
   backwardMonth = new Button ( 510, 935, 50, 30, "<<-", buttonColor, smallFont, 6, 515); // center right button under the box with the date
 
+  // Joe: Adding buttons for the line chart, for changing dates and both states
+  forwardFirstCounty = new Button ( 390, 935, 50, 30, "->", buttonColor, smallFont, 1, 395); 
+  forwardSecondCounty = new Button ( 690, 935, 50, 30, "->", buttonColor, smallFont, 3, 695);
+  backwardFirstCounty = new Button ( 140, 935, 50, 30, "<-", buttonColor, smallFont, 2, 145);
+  backwardSecondCounty = new Button ( 440, 935, 50, 30, "<-", buttonColor, smallFont, 4, 445);
+  forwardFirstDay = new Button ( 1050, 935, 50, 30, "->", buttonColor, smallFont, 5, 1055);
+  forwardSecondDay = new Button ( 1450, 935, 50, 30, "->", buttonColor, smallFont, 10, 1455);
+  backwardFirstDay = new Button ( 800, 935, 50, 30, "<-", buttonColor, smallFont, 6, 805); 
+  backwardSecondDay = new Button ( 1200, 935, 50, 30, "<-", buttonColor, smallFont, 11, 1205);
+  forwardFirstMonth = new Button ( 1100, 935, 50, 30, "->>", buttonColor, smallFont, 7, 1105);
+  forwardSecondMonth = new Button ( 1500, 935, 50, 30, "->>", buttonColor, smallFont, 12, 1505);
+  backwardFirstMonth = new Button ( 750, 935, 50, 30, "<<-", buttonColor, smallFont, 8, 755);
+  backwardSecondMonth = new Button ( 1150, 935, 50, 30, "<<-", buttonColor, smallFont, 13, 1155);
+
+
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
   homeScreen.addButton(worldMapButton);
@@ -683,7 +845,7 @@ void setupScreens()
   worldMapScreen = new Screen(defaultBackground);
   worldMapScreen.addButton(returnButton);
   //Live Updates
-  timelineCasesScreen = new  TimelineCasesScreen(myConnection,defaultBackground);
+  timelineCasesScreen = new  TimelineCasesScreen(myConnection, defaultBackground);
   timelineCasesScreen.addButton(returnButton);
   //extra screens
   covidUSMapScreen = new Screen(defaultBackground);
@@ -697,73 +859,85 @@ void setupScreens()
 
   lineChartScreen = new Screen(defaultBackground);
   lineChartScreen.addButton(returnButton);
+  lineChartScreen.addButton(forwardFirstCounty);
+  lineChartScreen.addButton(forwardSecondCounty);
+  lineChartScreen.addButton(backwardFirstCounty);
+  lineChartScreen.addButton(backwardSecondCounty);
+  lineChartScreen.addButton(forwardFirstDay);
+  lineChartScreen.addButton(forwardSecondDay);
+  lineChartScreen.addButton(backwardFirstDay);
+  lineChartScreen.addButton(backwardSecondDay);
+  lineChartScreen.addButton(forwardFirstMonth);
+  lineChartScreen.addButton(forwardSecondMonth);
+  lineChartScreen.addButton(backwardFirstMonth);
+  lineChartScreen.addButton(backwardSecondMonth);
 }
 
 //Zemyna 07/04/2021 16:20
 void drawHeadlineFiguresScreen()
 {
   //header
-    stroke(57, 57, 57);
-    textFont(header);
-    fill(193, 193, 193);
-    rect(70, 70, 1470, 103);
-    fill(209, 209, 209);
-    rect(80, 80, 1450, 83);
-    fill(46, 46, 46);
-    textSize(78);
-    text("Headline Figures", 100, 150);
-    
-    fill(193,193,193);
-    rect(120,270,700,3);
-    rect(70,200,1775,789);
-    fill(107, 108, 147);
-    rect(80, 210, 1755, 769);
-    fill(193,193,193);
-    rect(90,220,857.5,364.5);
-    rect(967.5,220,857.5,364.5);
-    rect(90,604.5,857.5,364.5);
-    rect(967.5,604.5,857.5,364.5);
-    fill(107, 108, 147);
-    rect(100,230,837.5,344.5);
-    rect(977.5,230,837.5,344.5);
-    rect(100,614.5,837.5,344.5);
-    rect(977.5,614.5,837.5,344.5);
-    //text
-    fill(237, 237, 237);
-    textSize(46);
-    text("Total Confirmed Cases in the US", 180, 280);
-    text("Total Confirmed Cases in Washington DC", 120, 670);
-    text("Total Confirmed Cases in California", 1030, 280);
-    text("Last Updated:", 1250, 670);
-    fill(193,193,193);
-    rect(120,300,780,3);
-    rect(120,700,780,3);
-    rect(1000,700,780,3);
-    rect(1000,300,780,3);
-    //Zemyna 13/04/2021 09:45
-    int totalCases = getTotalUSCases();
-    String formattedTotalCases = String.format("%,d", totalCases);
-    String myQuery = "SELECT date, cases FROM covidData WHERE county = 'Maryland' AND area = 'Washington'";
-    Table myTable = myConnection.runQuery(myQuery);
-    int totalWashington = getCases(myTable);
-    String formattedWashington = String.format("%,d", totalWashington);
-    String myCaliQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = 'California' GROUP BY 1 ORDER BY 1 ASC";
-    Table myCaliTable = myConnection.runQuery(myCaliQuery);
-    int totalCali = getCases(myCaliTable); 
-    String formattedCali = String.format("%,d", totalCali);
-    textSize(78);
-    fill(237, 237, 237);
-    text(formattedTotalCases,340,450);
-    text(formattedWashington,400,850);
-    text(formattedCali,1250,450);
-    text("2020-04-28",1210,850);
+  stroke(57, 57, 57);
+  textFont(header);
+  fill(193, 193, 193);
+  rect(70, 70, 1470, 103);
+  fill(209, 209, 209);
+  rect(80, 80, 1450, 83);
+  fill(46, 46, 46);
+  textSize(78);
+  text("Headline Figures", 100, 150);
+
+  fill(193, 193, 193);
+  rect(120, 270, 700, 3);
+  rect(70, 200, 1775, 789);
+  fill(107, 108, 147);
+  rect(80, 210, 1755, 769);
+  fill(193, 193, 193);
+  rect(90, 220, 857.5, 364.5);
+  rect(967.5, 220, 857.5, 364.5);
+  rect(90, 604.5, 857.5, 364.5);
+  rect(967.5, 604.5, 857.5, 364.5);
+  fill(107, 108, 147);
+  rect(100, 230, 837.5, 344.5);
+  rect(977.5, 230, 837.5, 344.5);
+  rect(100, 614.5, 837.5, 344.5);
+  rect(977.5, 614.5, 837.5, 344.5);
+  //text
+  fill(237, 237, 237);
+  textSize(46);
+  text("Total Confirmed Cases in the US", 180, 280);
+  text("Total Confirmed Cases in Washington DC", 120, 670);
+  text("Total Confirmed Cases in California", 1030, 280);
+  text("Last Updated:", 1250, 670);
+  fill(193, 193, 193);
+  rect(120, 300, 780, 3);
+  rect(120, 700, 780, 3);
+  rect(1000, 700, 780, 3);
+  rect(1000, 300, 780, 3);
+  //Zemyna 13/04/2021 09:45
+  int totalCases = getTotalUSCases();
+  String formattedTotalCases = String.format("%,d", totalCases);
+  String myQuery = "SELECT date, cases FROM covidData WHERE county = 'Maryland' AND area = 'Washington'";
+  Table myTable = myConnection.runQuery(myQuery);
+  int totalWashington = getCases(myTable);
+  String formattedWashington = String.format("%,d", totalWashington);
+  String myCaliQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = 'California' GROUP BY 1 ORDER BY 1 ASC";
+  Table myCaliTable = myConnection.runQuery(myCaliQuery);
+  int totalCali = getCases(myCaliTable); 
+  String formattedCali = String.format("%,d", totalCali);
+  textSize(78);
+  fill(237, 237, 237);
+  text(formattedTotalCases, 340, 450);
+  text(formattedWashington, 400, 850);
+  text(formattedCali, 1250, 450);
+  text("2020-04-28", 1210, 850);
 }
 
 //Zemyna 13/04/2021
 int getTotalUSCases()
 {
   int totalCases=0;
-  for(int i=0; i<STATES.length; i++)
+  for (int i=0; i<STATES.length; i++)
   {
     String currentState = STATES[i];
     String myQuery = "SELECT area, SUM(cases) AS cases FROM covidData WHERE county = '" + currentState + "' GROUP BY 1 ORDER BY 1 ASC";
@@ -775,11 +949,11 @@ int getTotalUSCases()
 }
 
 int getCases(Table table)
+{
+  int totalCases=0;
+  for (int i=0; i<table.getRowCount(); i++)
   {
-    int totalCases=0;
-    for(int i=0; i<table.getRowCount(); i++)
-    {
-      totalCases+=int(table.getString(i,1));
-    }
-    return totalCases;
+    totalCases+=int(table.getString(i, 1));
   }
+  return totalCases;
+}
