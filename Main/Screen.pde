@@ -63,11 +63,6 @@ class Screen {
       rect(1520,460,155,250);
       fill(107, 108, 147);
       rect(1530,470,135,230);
-      for (int i=0; i<buttonList.size(); i++)
-      {
-      Button currentButton = (Button) buttonList.get(i);
-      currentButton.draw();
-      }
       //header
       stroke(57, 57, 57);
       textFont(header);
@@ -78,6 +73,11 @@ class Screen {
       fill(46, 46, 46);
       textSize(78);
       text("Covid-19 Timeline Cases by State/Area", 100, 150);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
     }
     
     //Zemyna 14/04/2021 10:47

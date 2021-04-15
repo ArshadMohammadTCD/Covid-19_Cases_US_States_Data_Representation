@@ -35,7 +35,7 @@ class TimelineCasesScreen extends Screen {
     dateTo = new TextWidget(1555, 640, 80, 30, "28/04/2020", color(255), EVENT_TEXTWIDGET_3, 10, true);
     this.addTextWidget(dateTo);
 
-    updateInfo = new Button(650, 100, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 670);
+    updateInfo = new Button(1497, 780, 200, 40, "Update Table", color(100), mainFont, EVENT_UPDATE_TABLE, 1522);
     addButton(updateInfo);
 
     setupData(false);
