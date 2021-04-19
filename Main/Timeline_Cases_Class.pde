@@ -46,7 +46,8 @@ class TimelineCasesScreen extends Screen {
       gridList.remove(casesByArea);
       gridList.remove(casesTimeline);
     }
-
+//  String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
+   // String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
     String queryByState = "select ' All counties' as county UNION select  distinct county from covidData ORDER BY 1 ASC";
     String queryByArea;
     if (countyInput.label.equals(" All counties")) { 
@@ -56,14 +57,14 @@ class TimelineCasesScreen extends Screen {
     }
     String queryTimeline;
     if(countyInput.label.equals(" All counties")){
-      queryTimeline= "select date, SUM(cases) as cases from covidData  WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+      queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
     }
     else {
       if(areaInput.label.equals(" All areas")){
-        queryTimeline= "select date, SUM(cases) as cases from covidData  WHERE county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+        queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
       }
       else {
-         queryTimeline= "select date, SUM(cases) as cases from covidData  WHERE area = '"+areaInput.label+"' AND county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+         queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid   WHERE area = '"+areaInput.label+"' AND county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
       }
       
     }

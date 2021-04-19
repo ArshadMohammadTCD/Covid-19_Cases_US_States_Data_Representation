@@ -59,9 +59,6 @@ public void Run(SQLConnection myConnection){
     stringBuilder.append(country[k]);
     stringBuilder.append("\")");
     //Print for testing purposes(Can be removed)
-    if (k % 3000 == 0) {
-      println(k);
-    }
     // Joins each line  except last line of string together using commas so it registers as one long query
     if (k != lines.length-1) {
       stringBuilder.append(",");
@@ -78,7 +75,48 @@ public void Run(SQLConnection myConnection){
   myConnection.updateQuery(deleteIndex);
   myConnection.updateQuery(createIndex);
 
-  print("done");
-
+ // Andrey 19/04/2021 00:40
+  StringBuilder stringBuilder2 = new StringBuilder(16000);
+  String dropPopTable = "DROP TABLE IF EXISTS popData";
+  String createNewPopTable = "CREATE TABLE IF NOT EXISTS popData(geoid INTEGER NOT NULL, populationTotal INTEGER NOT NULL,stateid INTEGER NOT NULL);";
+  
+  myConnection.updateQuery(dropPopTable);
+  myConnection.updateQuery(createNewPopTable);
+  
+   String[] lines2 = loadStrings("PopulationData.csv");
+   String[] geoidPop = new String[lines2.length];
+  String[] populationTotal = new String[lines2.length];
+  String[] stateIdPop = new String[lines2.length];
+  for (int i = 0; i < lines2.length; i++) {
+    String string = lines2[i];
+    String[] splitString = string.split(",", -1);
+   geoidPop[i] = splitString[0];
+   populationTotal[i] = splitString[1];
+   stateIdPop[i] = splitString[2];
+  }
+  
+   stringBuilder2.append("INSERT INTO popData(geoid,populationTotal,stateid) VALUES");
+  for (int k = 1; k<lines2.length; k++) {
+    stringBuilder2.append("(");
+    stringBuilder2.append('"');
+    stringBuilder2.append(geoidPop[k]);
+    stringBuilder2.append("\",\"");
+    stringBuilder2.append(populationTotal[k]);
+    stringBuilder2.append("\",\"");
+    stringBuilder2.append(stateIdPop[k]);
+    stringBuilder2.append("\")");
+    //Print for testing purposes(Can be removed)
+    // Joins each line  except last line of string together using commas so it registers as one long query
+    if (k != lines2.length-1) {
+      stringBuilder2.append(",");
+    }
+  }
+  print(stringBuilder2.toString());
+  stringBuilder2.append(";");
+  // Sends that query to database
+  myConnection.updateQuery(stringBuilder2.toString()); //<>//
+  
+  
+  
 }
 }
