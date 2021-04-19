@@ -40,6 +40,7 @@ class Grid {
       }
       newRow.setString(0, "No data");
     }
+    textSize(14);
     grid = new Cell[rowAmount][columnAmount]; // +1 ???  
     titleCellFillRect = color(208, 179, 214);  // color rect fill  
     titleCellStroke = color(252, 255, 31);    // color rect outline
@@ -77,8 +78,10 @@ class Grid {
       for (int i = 0; i < rowAmount; i++)
       {
         // make sure all columns are at least minWidthColumn wide
-        widthOfColumns[j] = max (widthOfColumns[j], ColumnMinWidth); 
+        widthOfColumns[j] = max(widthOfColumns[j], ColumnMinWidth); 
+        //widthOfColumns[j] 
         grid[i][j].w = widthOfColumns[j];
+        // println(widthOfColumns[j]);
       }
     }
 
@@ -101,6 +104,8 @@ class Grid {
       yCount += (cellHeight+spaceBetweenRows);
     }
     width = grid[0][columnAmount-1].x + widthOfColumns[columnAmount-1]+spaceBetweenColumns- topx;
+    
+   
   }
 
   void displayHeader(int j) {

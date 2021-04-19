@@ -42,12 +42,9 @@ class CumulativeCasesScreen extends Screen {
       gridList.remove(casesByArea);
     }
   /// Andrey 19/04/2021 01:31 Changes to add population
-//select c.geoid, c.cases as total, p.population as pop from covidData c  join population p on c.geoid = p.geoid  where county = "California"
     String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
     String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
-    println(queryByState);
-    println(queryByArea);
-
+    
     if (connection == null) {
       println("connection null");
     }

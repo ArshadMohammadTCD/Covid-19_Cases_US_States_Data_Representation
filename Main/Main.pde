@@ -1,5 +1,6 @@
 
 //Andrey 24/03/2021  16:00
+//importing squelized library to use sqlite
 import samuelal.squelized.*;
 //Zemyna 23/03/2021 20:15
 PFont mainFont;
@@ -84,6 +85,7 @@ ArrayList<Line> secondLines;
 //Andrey 24/03/2021 16:00
 SQLConnection myConnection;
 // Andrey 11/04/2020 18:07
+// Function to convert dates from dd/mm/yyyy to yyyy-mm-dd
 String ConvertDate(String date) {
   String result;
   String items[] = date.split("/");
@@ -105,15 +107,17 @@ void setup() {
   header = loadFont("ProcessingSansPro-Regular-78.vlw");
 
   // Andrey 01/04/2021 17:28
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  // Establishes connection to sqlite database
+  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
-  // Using a stringBuilder in order to effisciently forms strings for queries 
+ // Running import of files for tables of data
   DbImport job = new DbImport();
   job.Run(myConnection); //<>//
+
 
   setupScreens(); //<>//
   currentScreen=homeScreen; //<>//
@@ -176,10 +180,12 @@ void draw() {
 }
 //Andrey 01/04/2021 14:34
 void keyPressed() {
+  //Enables key controls while on the dataTableScreen
   if (currentScreen == dataTableScreen) {
     dataTableScreen.processKey(keyCode, key);
   }
   //Andrey 11/04/2021 16:04
+  //Enables key controls while on the timelineCasesScreen
   if (currentScreen == timelineCasesScreen) {
     timelineCasesScreen.processKey(keyCode, key);
   }
@@ -321,15 +327,15 @@ void mousePressed() {
     }
   } else if ( currentScreen ==  timelineCasesScreen ) {
     //Andrey  11/04/2021 16:03
+    //Checks for which button was pressed on timelineCasesScreen
     timelineCasesScreen.processEvent(event);
-
     if (event == EVENT_UPDATE_TABLE) {
       println("Refresh");
       timelineCasesScreen.setupData(true);
     }
     switch(event)
     {
-
+      //exit button to main screen
     case EVENT_BACK_TO_HOME:
       currentScreen=homeScreen;
       break;
@@ -342,9 +348,9 @@ void mousePressed() {
       break;
     }
   } else if ( currentScreen == dataTableScreen ) {
-    // Start Andrey  06/04/2021
+    // Andrey  06/04/2021
+   // Checks for which button was pressed on dataTableScreen
     dataTableScreen.processEvent(event);
-
     if (event == EVENT_UPDATE_TABLE) {
       println("Refresh");
       dataTableScreen.setupData(true);

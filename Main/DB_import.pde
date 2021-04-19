@@ -112,7 +112,7 @@ public void Run(SQLConnection myConnection){
     }
   }
   print(stringBuilder2.toString());
-  stringBuilder2.append(";");
+ // stringBuilder2.append(";");
   // Sends that query to database
   myConnection.updateQuery(stringBuilder2.toString()); //<>//
   

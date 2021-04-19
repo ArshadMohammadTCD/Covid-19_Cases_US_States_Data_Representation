@@ -1,3 +1,4 @@
+//Andrey 06/04/2020
 class Cell {
   //
   float x;  // pos 
@@ -23,9 +24,6 @@ class Cell {
   } // constr 
  
   void display () {
-    // uses fixed Pos
-    // (no scrolling)
-    // not in use 
     fill(colCellFillRect);
     stroke(colCellStroke);
     rect(x, y, w, h);
