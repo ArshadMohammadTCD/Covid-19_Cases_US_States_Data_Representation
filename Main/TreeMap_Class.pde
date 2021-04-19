@@ -166,7 +166,7 @@ class TreeMap {
        query1 = a; 
      }
      DataSource arshadsData1 = new DataSource(myConnection,query1);
-     printTable(arshadsData1.table);
+     //printTable(arshadsData1.table);
      for (int j = 0; j < 9; j++)
      {
         
@@ -189,7 +189,7 @@ class TreeMap {
       
       theArray[i] = table.getFloat(i, 1);
       theArray2[i] = table.getString(i,0);
-      println("Setting values "+theArray[i]);
+      //println("Setting values "+theArray[i]);
     }
   } 
 }

@@ -123,7 +123,7 @@ void createLineChart( int dateCount, int state1, int state2 ) {
       table = myConnection.runQuery(caseQuery);
       if ( l == 0 ) {
         firstCases.append(createTotalCases(table));
-        caseDates.append("2020-0" + lineChartMonth + "-" + (lineChartDay < 10 ? "0" : "") + lineChartDay + "'");
+        caseDates.append("2020-0" + lineChartMonth + "-" + (lineChartDay < 10 ? "0" : "") + lineChartDay);
         //caseDates.append(ConvertDate((lineChartDay < 10) ? "0" : "" + lineChartDay + "/0" + lineChartMonth + "/2020"));
       } else {
         secondCases.append(createTotalCases(table));

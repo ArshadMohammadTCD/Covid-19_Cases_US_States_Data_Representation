@@ -106,8 +106,8 @@ void setup() {
 
   // Andrey 01/04/2021 17:28
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -492,8 +492,7 @@ void mousePressed() {
         dateCount -= secondDay;
         secondDay = 29;
         createLineChart(dateCount, firstState, secondState);
-      } 
-      else if ( secondMonth > firstMonth && ( (firstMonth == 1 || firstMonth == 3 ) && firstDay < 31 )) {
+      } else if ( secondMonth > firstMonth && ( (firstMonth == 1 || firstMonth == 3 ) && firstDay < 31 )) {
         emptyLineChart();
         secondMonth--;
         dateCount -= secondDay;
@@ -739,12 +738,25 @@ void mouseMoved()
     }
   }
   // Joe 01/04/2021 11:25 
-  for (int i = 0; i<theBars.size(); i++) {
-    Bar theBar = (Bar) theBars.get(i);
-    if ( mouseY >= 220 && mouseY <= 900 && mouseX >= theBar.xpos && mouseX < theBar.xpos + theBar.blockWidth ) {
-      theBars.get(i).mouseOver = true;
-    } else {
-      theBars.get(i).mouseOver = false;
+  if ( currentScreen == statsGraphsScreen ) {
+    for (int i = 0; i<theBars.size(); i++) {
+      Bar theBar = (Bar) theBars.get(i);
+      if ( mouseY >= 220 && mouseY <= 900 && mouseX >= theBar.xpos && mouseX < theBar.xpos + theBar.blockWidth ) {
+        theBars.get(i).mouseOver = true;
+      } else {
+        theBars.get(i).mouseOver = false;
+      }
+    }
+  } else if ( currentScreen == lineChartScreen ) {
+    for ( int i = 0; i < firstPoints.size(); i++ ) {
+      Point thePoint = (Point) firstPoints.get(i);
+      if ( mouseY >= 220 && mouseY <= 929 && mouseX >= thePoint.xpos - 20 && mouseX <= thePoint.xpos + 20 ) {
+        thePoint.mouseOver = true;
+        secondPoints.get(i).mouseOver = true;
+      } else {
+        thePoint.mouseOver = false;
+        secondPoints.get(i).mouseOver = false;
+      }
     }
   }
   //Zemyna 01/04/2021 05:37
