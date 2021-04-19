@@ -86,12 +86,14 @@ void createPoint(ArrayList<Point> thePoints, int population, float speed, int xp
 void drawPoints() {
   for ( int i = 0; i < firstPoints.size(); i++ ) {
     firstPoints.get(i).draw();
+    secondPoints.get(i).draw();
     if ( firstPoints.get(i).mouseOver == true ) {
       text(firstPoints.get(i).pointDate, mouseX + 10, mouseY - 20);
+      fill(0, 0, 255);
+      text(STATES[secondState] + " : " + secondPoints.get(i).population, 120, 280);
+      fill(255, 0, 0);
+      text(STATES[firstState] + " : " + firstPoints.get(i).population, 120, 250);
     }
-  }
-  for ( int i = 0; i < secondPoints.size(); i++ ) {
-    secondPoints.get(i).draw();
   }
 }
 
