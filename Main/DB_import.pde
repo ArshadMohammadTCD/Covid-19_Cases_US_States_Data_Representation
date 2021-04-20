@@ -96,7 +96,7 @@ public void Run(SQLConnection myConnection){
   }
   
    stringBuilder2.append("INSERT INTO popData(geoid,populationTotal,stateid) VALUES");
-  for (int k = 1; k<lines2.length; k++) {
+  for (int k = 0; k<lines2.length; k++) {
     stringBuilder2.append("(");
     stringBuilder2.append('"');
     stringBuilder2.append(geoidPop[k]);
@@ -114,7 +114,7 @@ public void Run(SQLConnection myConnection){
  // print(stringBuilder2.toString());
  // stringBuilder2.append(";");
   // Sends that query to database
-  myConnection.updateQuery(stringBuilder2.toString()); //<>//
+  myConnection.updateQuery(stringBuilder2.toString());
   
   
   
