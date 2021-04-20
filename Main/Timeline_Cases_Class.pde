@@ -57,14 +57,15 @@ class TimelineCasesScreen extends Screen {
     }
     String queryTimeline;
     if(countyInput.label.equals(" All counties")){
-      queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+      queryTimeline= "select date, SUM(cases) as cases,((SUM(cases)/SUM(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid/1000 = p.stateid AND (p.geoid%1000 == 0) WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+      //  queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as population FROM covidData c join popData p on c.geoid = p.geoid WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
     }
     else {
       if(areaInput.label.equals(" All areas")){
-        queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+        queryTimeline= "select date, SUM(cases) as cases,((SUM(cases)/SUM(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid = p.geoid WHERE county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
       }
       else {
-         queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid   WHERE area = '"+areaInput.label+"' AND county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+         queryTimeline= "select date, SUM(cases) as cases,((SUM(cases)/p.populationTotal)*1000000) as casePerM FROM covidData c join popData p on c.geoid = p.geoid   WHERE area = '"+areaInput.label+"' AND county = '"+countyInput.label+"' AND date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
       }
       
     }

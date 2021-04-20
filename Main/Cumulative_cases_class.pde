@@ -42,17 +42,18 @@ class CumulativeCasesScreen extends Screen {
       gridList.remove(casesByArea);
     }
   /// Andrey 19/04/2021 01:31 Changes to add population
-    String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
-    String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
+  String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as population,((SUM(cases)/SUM(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid/1000 = p.stateid AND (p.geoid%1000 == 0)WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
+   // String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as population FROM covidData c join popData p on c.geoid = p.geoid OR ((p.geoid % 1000) == 0) WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
+    String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as population,((SUM(cases)/(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
     
     if (connection == null) {
       println("connection null");
     }
     casesByStateDs = new DataSource(connection, queryByState);
-    casesByState = new Grid(casesByStateDs.table, 190, 330, 600, 600, EVENT_GRID_1);
+    casesByState = new Grid(casesByStateDs.table, 150, 330, 600, 600, EVENT_GRID_1);
     gridList.add(casesByState);
     casesByAreaDs = new DataSource(connection, queryByArea);
-    casesByArea = new Grid(casesByAreaDs.table, 1440, 330, 600, 600, EVENT_GRID_2);
+    casesByArea = new Grid(casesByAreaDs.table, 1390, 330, 600, 600, EVENT_GRID_2);
     gridList.add(casesByArea);
   }
 

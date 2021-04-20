@@ -78,7 +78,7 @@ public void Run(SQLConnection myConnection){
  // Andrey 19/04/2021 00:40
   StringBuilder stringBuilder2 = new StringBuilder(16000);
   String dropPopTable = "DROP TABLE IF EXISTS popData";
-  String createNewPopTable = "CREATE TABLE IF NOT EXISTS popData(geoid INTEGER NOT NULL, populationTotal INTEGER NOT NULL,stateid INTEGER NOT NULL);";
+  String createNewPopTable = "CREATE TABLE IF NOT EXISTS popData(geoid INTEGER NOT NULL, populationTotal REAL NOT NULL,stateid INTEGER NOT NULL);";
   
   myConnection.updateQuery(dropPopTable);
   myConnection.updateQuery(createNewPopTable);
@@ -111,7 +111,7 @@ public void Run(SQLConnection myConnection){
       stringBuilder2.append(",");
     }
   }
-  print(stringBuilder2.toString());
+ // print(stringBuilder2.toString());
  // stringBuilder2.append(";");
   // Sends that query to database
   myConnection.updateQuery(stringBuilder2.toString()); //<>//
