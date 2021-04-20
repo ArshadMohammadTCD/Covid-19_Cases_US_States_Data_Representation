@@ -108,6 +108,31 @@ class Screen {
       currentButton.draw();
       }
     }
+    
+    //Zemyna 20/04/2021
+    if(currentScreen==treeMapScreen)
+    {
+      //header
+      stroke(57, 57, 57);
+      textFont(header);
+      fill(193, 193, 193);
+      rect(70, 70, 1470, 103);
+      fill(209, 209, 209);
+      rect(80, 80, 1450, 83);
+      fill(46, 46, 46);
+      textSize(78);
+      text("Tree Map of Covid-19 Cases by State", 100, 150);
+      stroke(57, 57, 57);
+      fill(193,193,193);
+      rect(70,200,1775,789);
+      fill(107, 108, 147);
+      rect(80, 210, 1755, 769);
+      for (int i=0; i<buttonList.size(); i++)
+      {
+      Button currentButton = (Button) buttonList.get(i);
+      currentButton.draw();
+      }
+    }
   }
 
   int getEvent()
