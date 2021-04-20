@@ -243,18 +243,19 @@ void popUpStatsTable()
   text("State: ", 1580, 550);
   text("Population: ", 1580, 620);
   text("Total Cases: ", 1580, 690);
-  text("Cases per 1M: ", 1580, 760);
+  text("Total US Cases: ", 1580, 760);
   text("Cases by  ", 1580, 830);
   text("percentage: ", 1580, 860);
   fill(250, 250, 250);
   //Zemyna 14/04/2021 10:25
   String formattedPop = String.format("%,d", currentState.population);
   String formattedTotCases = String.format("%,d", currentState.totalCases);
-  String formattedCasePerMil = String.format("%,d", currentState.cases1M);
+  int total = getTotalUSCases();
+  String formattedTotalCases = String.format("%,d", total);
   String formattedPercen = String.format("%.2f", currentState.percentageCases);
   text(currentState.title, 1580, 585);
   text(formattedPop, 1580, 655);
   text(formattedTotCases, 1580, 725);
-  text(formattedCasePerMil, 1580, 795);
+  text(formattedTotalCases, 1580, 795);
   text(formattedPercen + "%", 1580, 895);
 }

@@ -1,7 +1,7 @@
 class State {////Zemyna 01/04/2021 05:39
   PImage state;
   String stateEvent, title;
-  int xT, yT, width, height, population, totalCases, cases1M;
+  int xT, yT, width, height, population, totalCases;
   float percentageCases;
   boolean hover=false;
   color tintColor;
@@ -13,9 +13,8 @@ class State {////Zemyna 01/04/2021 05:39
     this.width = width; this.height = height;
     this.stateEvent = stateEvent;
     title = stateEvent;
-    population = int(random(278759,39512223)); //random population for demonstration purposes
+    population = getPopulationPerState(); //random population for demonstration purposes
     totalCases = getCases(queryTable());
-    cases1M = int(random(300,4000)); //random
     percentageCases = getPercentage();
   }
   
@@ -110,5 +109,14 @@ class State {////Zemyna 01/04/2021 05:39
       totalCases+=stateCases;
     }
     return totalCases;
+  }
+  
+  //Zemyna 20/04/2021
+  int getPopulationPerState()
+  {
+    String queryByState = "SELECT date, SUM(cases) AS cases, p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE county = '" +stateEvent+ "' GROUP BY 1 ORDER BY 1 ASC";
+    Table myTable = myConnection.runQuery(queryByState);
+    int population = int(myTable.getString(0,2));
+    return population;
   }
 }

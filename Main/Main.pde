@@ -108,9 +108,9 @@ void setup() {
 
   // Andrey 01/04/2021 17:28
   // Establishes connection to sqlite database
-  myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
