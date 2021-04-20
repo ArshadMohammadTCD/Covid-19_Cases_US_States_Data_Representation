@@ -65,6 +65,15 @@ Button forwardSecondMonth;
 Button backwardFirstMonth;
 Button backwardSecondMonth;
 
+// Button Arshad
+Button pause;
+Button forwardOneDay;
+Button backwardOneDay;
+Button forwardOneWeek;
+Button backwardOneWeek;
+Button speedUp;
+Button slowDown;
+
 int graphDay;
 int graphMonth;
 int firstDay;
@@ -110,8 +119,8 @@ void setup() {
   // Establishes connection to sqlite database
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
+  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
  // Running import of files for tables of data
@@ -192,6 +201,53 @@ void keyPressed() {
 }
 
 void mousePressed() {
+  // Arshad 
+  //Arshad 19/04
+
+  int eventTreeMap;
+  eventTreeMap = currentScreen.getEvent();
+  if (currentScreen == treeMapScreen){
+    switch(eventTreeMap)
+    {
+      case 1:
+      if (isPaused == false){
+        isPaused = true;
+      }
+      else{
+       isPaused = false; 
+      }
+      break;
+      case 2:
+      if (day < WORKING_DATES-1){
+        day++;
+      }
+      break;
+      case 3:
+      if (day > 1){
+        day--;
+      }
+      break;
+      case 4:
+      if (day+7 < WORKING_DATES-1){
+        day = day+7;
+      }
+      else{
+        day =  WORKING_DATES-1;
+      }
+      break;
+      
+      case 5:
+      if (day-7 > 0){
+        day = day-7;
+      }
+      else{
+        day =  1;
+      }
+      break;
+    }
+    
+    
+  }
   //Zemyna 23/03/2021 20:15
   //Joe 30/03/21 00:50 : Created switch statements depending on the current screen
   int event;
@@ -834,6 +890,15 @@ void setupScreens()
   forwardSecondMonth = new Button ( 1500, 935, 50, 30, "->>", buttonColor, smallFont, 12, 1505);
   backwardFirstMonth = new Button ( 750, 935, 50, 30, "<<-", buttonColor, smallFont, 8, 755);
   backwardSecondMonth = new Button ( 1150, 935, 50, 30, "<<-", buttonColor, smallFont, 13, 1155);
+  
+  // Arshad 
+  pause = new Button (1570, 510, 250, 50, "Pause", buttonColor, mainFont, 1, 1575);
+  forwardOneDay = new Button (1570, 590, 250, 50," Next Day ", buttonColor, mainFont, 2, 1575); 
+  backwardOneDay = new Button (1570, 670, 250, 50, " Previous Day", buttonColor, mainFont, 3, 1575);
+  forwardOneWeek = new Button (1570, 750, 250, 50, "Next Week", buttonColor, mainFont, 4, 1575);
+  backwardOneWeek = new Button (1570, 830, 250, 50," Previous Week ", buttonColor, mainFont, 5, 1575); 
+  speedUp = new Button (1570, 670, 250, 50, " Speed Up", buttonColor, mainFont, 6, 1575);
+  slowDown = new Button (1570, 670, 250, 50, " Slow Down", buttonColor, mainFont, 7, 1575);
 
 
   homeScreen.addButton(headlineFigures); 
@@ -874,6 +939,13 @@ void setupScreens()
 
   treeMapScreen = new Screen(defaultBackground);
   treeMapScreen.addButton(returnButton);
+  treeMapScreen.addButton(pause);
+  treeMapScreen.addButton(forwardOneDay);
+  treeMapScreen.addButton(backwardOneDay);
+  treeMapScreen.addButton(forwardOneWeek);
+  treeMapScreen.addButton(backwardOneWeek);
+  treeMapScreen.addButton(slowDown);
+  treeMapScreen.addButton(speedUp);
 
   lineChartScreen = new Screen(defaultBackground);
   lineChartScreen.addButton(returnButton);

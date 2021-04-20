@@ -38,13 +38,7 @@ final String[] STATES = {"Alabama", "Alaska", "Arizona", "Arkansas", "California
                         "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
                         "West Virginia", "Wisconsin", "Wyoming"};
 // Arshad 01/04/21 16:55
-final int NUMBER_OF_STATES = STATES.length;
 
-// These Are Setting For My Tree Map Feel Free to mess around with them and tell me if you find bugs!
-// Arshad 02/04/21 19:49
-final int SIZE_OF_TREE_MAP = 10;       
-final int DAYS_SINCE_COVID = 365;
-final int SPEED_OF_DAY_CYCLE_IN_SECONDS = 5;
 
 // Andrey 01/04/2021 14:20 Constants for data table
 final int cellHeight = 20;
