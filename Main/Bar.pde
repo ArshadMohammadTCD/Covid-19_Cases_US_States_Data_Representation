@@ -54,9 +54,9 @@ void drawBars() {
     theBars.get(i).draw();
     if ( theBars.get(i).mouseOver ) {
       fill(0);
-      text("Area: " + theBars.get(i).areaName, 1050, 965); // text on the bottom right for the bar the mouse is hovering over
-      text("Recorded Cases: " + theBars.get(i).population, 1500, 965); // recorded cases
-      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 1050, 1015); // % of total cases in the state from that area
+      text("Area: " + theBars.get(i).areaName, 100, 1020); // text on the bottom right for the bar the mouse is hovering over
+      text("Recorded Cases: " + theBars.get(i).population, 600, 1020); // recorded cases
+      text((float(theBars.get(i).population) / getTotalCases(theBars)) * 100 + "% of cases for the state of " + STATES[stateIndex], 950, 1020); // % of total cases in the state from that area
       stroke(0);
     }
   }
@@ -93,7 +93,9 @@ void drawChart() {
   fill(255);
   text(STATES[stateIndex], 200, 956); // title for state over the buttons
   text((graphDay + "/0" + graphMonth + "/2020"), 620, 956); 
-  rect(1030, 929, 795, 103); // rectangle for bottom right, needs to be aligned
+  rect(70, 990, 520, 45); // rectangle displaying information
+  rect(590, 990, 350, 45);
+  rect(940, 990, 905, 45);
   fill(240, 235, 245);
   rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);

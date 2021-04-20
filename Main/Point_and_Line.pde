@@ -70,11 +70,11 @@ void setupLineChart() {
   firstState = 0;
   secondState = 1;
   firstDay = 13;
-  secondDay = 14;
+  secondDay = 27;
   firstMonth = 3;
   secondMonth = 3;
-  dateCount = 2;
-
+  dateCount = 15;
+  
   graphDay = 13;
   graphMonth = 3;
 }
