@@ -117,7 +117,7 @@ void createLineChart( int dateCount, int state1, int state2 ) {
   for ( int l = 0; l <= 1; l++  ) {
     int lineChartDay = firstDay;
     int lineChartMonth = firstMonth;
-    for ( int i = 0; i < dateCount; i++ ) {
+    for ( int i = 0; i <= dateCount; i++ ) {
 
       caseQuery = "SELECT cases, area FROM covidData WHERE county = '" +  (( l == 0 ? STATES[state1] : STATES[state2])+ "' AND date = '" 
         + "2020-0" + lineChartMonth + "-" + (lineChartDay < 10 ? "0" : "") + lineChartDay + "'");
@@ -202,13 +202,13 @@ void drawLineChart() {
   stroke(57, 57, 57);
   textFont(header);
   fill(193, 193, 193);
-  rect(70, 70, 1470, 103); // outer rectangle of header
+  rect(70, 70, 1500, 103); // outer rectangle of header
   fill(209, 209, 209);
-  rect(80, 80, 1450, 83); // inner rectangle of header
+  rect(80, 80, 1480, 83); // inner rectangle of header
   fill(46, 46, 46);
   textSize(50); // size of the text
   text("Case trend of " + STATES[firstState] + " and " + STATES[secondState] + " from " + ((firstDay < 10) ? "0" : "") + firstDay + "/0" + firstMonth + "/2020 to " 
-        + ((secondDay < 10) ? "0" : "" ) + secondDay + "/0" + secondMonth + "/2020", 100, 150); // header of the title
+        + ((secondDay < 10) ? "0" : "" ) + secondDay + "/0" + secondMonth + "/2020", 100, 135); // header of the title
 }
 
 

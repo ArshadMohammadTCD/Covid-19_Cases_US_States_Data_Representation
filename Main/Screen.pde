@@ -25,7 +25,7 @@ class Screen {
       background(screenBackground);
       stroke(57, 57, 57);
       fill(193,193,193);
-      rect(460,280,1000,615);
+      rect(460,280,1000,550);
       for (int i=0; i<buttonList.size(); i++)
       {
       Button currentButton = (Button) buttonList.get(i);

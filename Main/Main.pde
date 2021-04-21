@@ -119,8 +119,8 @@ void setup() {
   // Andrey 01/04/2021 17:28
   // Establishes connection to sqlite database
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
-  //myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
-  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
+  myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
+  // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");
   //myConnection = new SQLiteConnection("jdbc:sqlite:/Users/rehaman/Downloads/covid_data.db");
   //Andrey 24/03/2021  16:00
 
@@ -480,7 +480,7 @@ void mousePressed() {
         firstDay--;
         dateCount++;
         createLineChart(dateCount, firstState, secondState);
-      } else if ( firstDay > 1 ) {
+      } else if ( (firstMonth == 2 || firstMonth == 3 || firstMonth == 4) && firstDay > 1 ) {
         emptyLineChart();
         firstDay--;
         dateCount++;
@@ -813,7 +813,7 @@ void mouseMoved()
   } else if ( currentScreen == lineChartScreen ) {
     for ( int i = 0; i < firstPoints.size(); i++ ) {
       Point thePoint = (Point) firstPoints.get(i);
-      if ( mouseY >= 220 && mouseY <= 929 && mouseX >= thePoint.xpos - 20 && mouseX <= thePoint.xpos + 20 ) {
+      if ( mouseY >= 220 && mouseY <= 929 && mouseX >= thePoint.xpos - 10 && mouseX <= thePoint.xpos + 10 ) {
         thePoint.mouseOver = true;
         secondPoints.get(i).mouseOver = true;
       } else {
@@ -862,11 +862,11 @@ void setupScreens()
   homeScreenBackground = loadImage("Home Screen1.png");
   homeScreen = new Screen(homeScreenBackground);
   headlineFigures = new Button(480, 300, 960, 50, "Headline Figures", buttonColor, mainFont, EVENT_HEADLINE_FIGURES, 867);
-  statisticsAndGraphs = new Button(480, 375, 960, 50, "Statistics & Graphs", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 858);
-  worldMapButton = new Button(480, 825, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
+  statisticsAndGraphs = new Button(480, 375, 960, 50, "Bar Chart of Area Cases", buttonColor, mainFont, EVENT_STATS_N_GRAPHS, 833);
+  //worldMapButton = new Button(480, 825, 960, 50, "World Map", buttonColor, mainFont, EVENT_WORLD_MAP, 901);
   timelineCasesButton = new Button(480, 525, 960, 50, "Covid-19 Timeline Cases in the US by State/Area", buttonColor, mainFont, EVENT_TIMELINE_CASES, 710);
-  covidUSMapButton = new Button(480, 600, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
-  dataTableButton = new Button(480, 675, 960, 50, "Covid-19 Cumulative Cases in the US by State/Area", buttonColor, mainFont, EVENT_DATA_TABLE, 695);//change label if using
+  covidUSMapButton = new Button(480, 675, 960, 50, "Covid-19 Cases in the US: Map", buttonColor, mainFont, EVENT_FREE_1, 790);//change label if using
+  dataTableButton = new Button(480, 600, 960, 50, "Covid-19 Cumulative Cases in the US by State/Area", buttonColor, mainFont, EVENT_DATA_TABLE, 695);//change label if using
   treeMapButton = new Button(480, 750, 960, 50, "Tree Map Visualisation", buttonColor, mainFont, EVENT_TREE_MAP, 835);//change label if using
   lineChartButton = new Button(480, 450, 960, 50, "Line Chart of Cases", buttonColor, mainFont, EVENT_FREE_4, 860);//change label if using
 
@@ -904,7 +904,7 @@ void setupScreens()
 
   homeScreen.addButton(headlineFigures); 
   homeScreen.addButton(statisticsAndGraphs); 
-  homeScreen.addButton(worldMapButton);
+  //homeScreen.addButton(worldMapButton);
   homeScreen.addButton(timelineCasesButton);
   homeScreen.addButton(covidUSMapButton);//change if using 
   homeScreen.addButton(dataTableButton);//change if using 

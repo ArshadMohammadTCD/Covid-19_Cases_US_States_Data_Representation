@@ -93,10 +93,10 @@ void drawChart() {
   fill(255);
   text(STATES[stateIndex], 200, 956); // title for state over the buttons
   text((graphDay + "/0" + graphMonth + "/2020"), 620, 956); 
+  fill(240, 235, 245);
   rect(70, 990, 520, 45); // rectangle displaying information
   rect(590, 990, 350, 45);
   rect(940, 990, 905, 45);
-  fill(240, 235, 245);
   rect(90, 220, 1735, 709); // rectangle for the white background of the chart
   fill(0);
   drawBars();

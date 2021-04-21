@@ -18,7 +18,7 @@ final int NUMBER_OF_STATES = STATES.length;
 // Arshad 02/04/21 19:49
 final int SIZE_OF_TREE_MAP = 10;       
 final int DAYS_SINCE_COVID = 365;
-final int SPEED_OF_DAY_CYCLE_IN_SECONDS = 1;
+final int SPEED_OF_DAY_CYCLE_IN_SECONDS = 10000;
 final int SPEED_OF_TREEMAP = 10;
 int day = 1;
 boolean isPaused = true;
@@ -299,11 +299,11 @@ class TreeMap {
     rect(1570, 270, 250, 3);
     rect(1570, 330, 250, 3);
     textSize(24);
-    text("This tree map takes the top", 1570, 360);
-    text("10 US states ordered by", 1570, 390);
-    text("covid cases. The tree map", 1570, 420);
-    text("starts from 20th of January", 1570, 450);
-    text("to 27th of April.", 1570, 480);
+    text("This tree map takes the", 1570, 360);
+    text("top 10 US states ordered", 1570, 390);
+    text("by covid cases. The tree", 1570, 420);
+    text("map starts from 20th of ", 1570, 450);
+    text("January to April 27th", 1570, 480);
     rect(1570, 490, 250, 3);
     
     
