@@ -114,9 +114,13 @@ class State {////Zemyna 01/04/2021 05:39
   //Zemyna 20/04/2021
   int getPopulationPerState()
   {
-    String queryByState = "SELECT date, SUM(cases) AS cases, p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE county = '" +stateEvent+ "' GROUP BY 1 ORDER BY 1 ASC";
+    int population=0;
+    String queryByState = "SELECT area, SUM(cases) AS cases, p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid  WHERE county = '"+stateEvent+"' GROUP BY 1 ORDER BY 1 ASC";
     Table myTable = myConnection.runQuery(queryByState);
-    int population = int(myTable.getString(0,2));
+    for (int i=0; i<myTable.getRowCount(); i++)
+    {
+      population+=int(myTable.getString(i, 2));
+    }
     return population;
   }
 }
