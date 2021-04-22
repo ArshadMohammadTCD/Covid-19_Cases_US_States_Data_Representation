@@ -118,6 +118,11 @@ void setup() {
 
   // Andrey 01/04/2021 17:28
   // Establishes connection to sqlite database
+  
+  // To be used when testing
+  // myConnection = newSQLiteConnection(jdbc:sqlite:/"Replace with folder where sqlite is put:\\Replace with path of where you put the folder containing the program);
+  // For examples look below
+  
   //myConnection = new SQLiteConnection("jdbc:sqlite:/D:\\Users\\Andrey\\Desktop\\Programming project repoistory\\CS1013-2021-9.\\covid_data.db");
   myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\Users\\jdaha\\sqlite\\covid_data.db");
   // myConnection = new SQLiteConnection("jdbc:sqlite:/C:\\sqlite3\\covid_data.db");

@@ -82,7 +82,7 @@ class TimelineCasesScreen extends Screen {
     casesByArea = new Grid(casesByAreaDs.table, 630, 520, 600, 400, EVENT_GRID_2);
     gridList.add(casesByArea);
     casesTimelineDs = new DataSource(connection, queryTimeline);
-    casesTimeline = new Grid(casesTimelineDs.table, 1200, 300, 600, 600, EVENT_GRID_3);
+    casesTimeline = new Grid(casesTimelineDs.table, 1150, 300, 600, 600, EVENT_GRID_3);
     gridList.add(casesTimeline);
   }
 
