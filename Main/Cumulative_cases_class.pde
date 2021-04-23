@@ -1,4 +1,7 @@
 // Andrey 06/04/2020 22:00
+/*
+This class makes the Cumulative table screen 
+*/
 import samuelal.squelized.*;
 class CumulativeCasesScreen extends Screen {
   ArrayList gridList = new ArrayList();
@@ -14,7 +17,7 @@ class CumulativeCasesScreen extends Screen {
   DataSource casesByAreaDs;
   DataSource casesTotalDs;
   int selected_event;
-
+// Constructor
   CumulativeCasesScreen(
     SQLConnection myConnection, PImage screenBackground) {
     super(screenBackground);
@@ -36,6 +39,7 @@ class CumulativeCasesScreen extends Screen {
 
     setupData(false);
   }
+  // gets the data for the tables
   void setupData(boolean refresh) {
     if (refresh) {
       gridList.remove(casesByState);
@@ -43,7 +47,7 @@ class CumulativeCasesScreen extends Screen {
     }
   /// Andrey 19/04/2021 01:31 Changes to add population
   String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as population,((SUM(cases)/(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid/1000 = p.stateid AND (p.geoid%1000 == 0)WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
-   // String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as population FROM covidData c join popData p on c.geoid = p.geoid OR ((p.geoid % 1000) == 0) WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
+   
     String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as population,((SUM(cases)/(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
     
     if (connection == null) {
@@ -56,7 +60,7 @@ class CumulativeCasesScreen extends Screen {
     casesByArea = new Grid(casesByAreaDs.table, 1390, 330, 600, 600, EVENT_GRID_2);
     gridList.add(casesByArea);
   }
-
+// Highlights which thing is selected
   void drawFocus(){
      switch(selected_event){
       case EVENT_TEXTWIDGET_1:
@@ -74,7 +78,7 @@ class CumulativeCasesScreen extends Screen {
     }  
     
   }
-  
+  // Draws all the elements of the screen
   void draw() {
     
     super.draw();
@@ -94,9 +98,8 @@ class CumulativeCasesScreen extends Screen {
       rect(currentGrid.topx-10, currentGrid.y-10, currentGrid.width+20, currentGrid.height+20);
       currentGrid.draw();
     }
-    //textSize(20);
-    //textSize(20);
     fill(237, 237, 237);
+    //Draws text and borders
     textFont(largeFont);
     textSize(24);
     text("Date :", 920, 600);
@@ -114,7 +117,7 @@ class CumulativeCasesScreen extends Screen {
     rect(700, 865, 510, 3);
     rect(700, 775, 510, 3);
   }
-
+// Makes buttons able to be interracted with
   int getEvent()
   {
     int event = super.getEvent();
@@ -145,7 +148,7 @@ class CumulativeCasesScreen extends Screen {
 
     return EVENT_NULL;      
   }
-  
+  // Part of what decides which table/button is selected
   void processEvent(int event){
     
     switch(event){
@@ -164,7 +167,7 @@ class CumulativeCasesScreen extends Screen {
 
     }
   }
-  
+  // Implements key inputs
   void processKey(int key_code, int key_pressed){
     switch(selected_event){
       case EVENT_TEXTWIDGET_1:      

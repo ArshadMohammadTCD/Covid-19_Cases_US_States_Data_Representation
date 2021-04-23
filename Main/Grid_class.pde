@@ -1,4 +1,7 @@
 // Andrey 06/04/2020
+/*
+This class creates a 2D grid of cells which allows it to create a table to show values. It makes the grid auto adjust to the correct width of columns and show only the columns that have relevant data
+*/
 class Grid {
   private Table testTable;
   private float topx;
@@ -19,7 +22,7 @@ class Grid {
   color selectCellFillText;  // color text
   int selectedRow; 
   int event;
-
+// Constructor
   Grid(Table t, float x, float y, float w, float h, int event) {
     this.event = event;
     testTable = t;
@@ -41,7 +44,7 @@ class Grid {
       newRow.setString(0, "No data");
     }
     textSize(14);
-    grid = new Cell[rowAmount][columnAmount]; // +1 ???  
+    grid = new Cell[rowAmount][columnAmount];   
     titleCellFillRect = color(208, 179, 214);  // color rect fill  
     titleCellStroke = color(252, 255, 31);    // color rect outline
     titleCellFillText = color(0);  // color text
@@ -51,10 +54,11 @@ class Grid {
     selectCellFillText = color(0);  // color text
     selectedRow = 0;
 
+// Loads values into the cells
     for (int i = 0; i < rowAmount; i++ ) {
       for (int j = 0; j < columnAmount; j++)
       {
-        //println(i, j);
+        
         grid[i][j] = new Cell (testTable.getString(i, j), i * (width/columnAmount) + 12, j * (cellHeight+11)+12, color (255, 255, 240), color (251, 255, 31), color(0) );
         grid[i][j].w = ColumnMinWidth;
         grid[i][j].h = cellHeight;
@@ -107,7 +111,7 @@ class Grid {
     
    
   }
-
+// display the header row
   void displayHeader(int j) {
     float x = grid[0][j].x;
     float y = this.y + spaceBetweenRows*2;
@@ -126,8 +130,8 @@ class Grid {
    fill(120);
     stroke(0);
     rect(topx, y, width, height); 
+    // Displays the cells for each row/column
     for (int j = 0; j < columnAmount; j++) {
-      
       displayHeader(j);
     }
     for (int i = 0; i < rowAmount; i++) {
@@ -135,7 +139,6 @@ class Grid {
       if (startY+ grid[i][0].y + cellHeight > this.y+height) {
         break;
       }
-
       for (int j = 0; j < columnAmount; j++) {
         if(startY+grid[i][j].y > topy)
         grid[i][j].display2(startX, startY);
@@ -143,10 +146,10 @@ class Grid {
     }
     for (int j = 0; j < columnAmount; j++) {
       grid[selectedRow][j].displaySelected(startX, startY, selectCellFillRect, selectCellStroke, selectCellFillText);
-     
+
     }
   }
-
+// Controls what happens when keys are pressed
   String keyProcess(int keyCode, int key)
   {
     //println(keyCode);
@@ -169,10 +172,12 @@ class Grid {
       startY = 0;
       selectedRow = 0;
     }
-    //--------------------------
+   
+   
+    
     // boundaries 
      
-       
+     //Makes sure that selected element doesnt go out of table limit and the table scrolls down  
      
     if(selectedRow >= 0 && selectedRow < rowAmount  && 
       grid[selectedRow][0].y + cellHeight + spaceBetweenRows*2 > this.y+height-startY){
@@ -195,7 +200,7 @@ class Grid {
 
       return "";
   }
-  
+  // Makes buttons interractable
   int getEvent(int mX, int mY)
   {
     if ((mX > topx) && (mX < topx+width) && (mY > y) && (mY < y+height))

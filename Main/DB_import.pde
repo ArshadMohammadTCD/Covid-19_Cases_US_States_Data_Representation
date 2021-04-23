@@ -1,8 +1,13 @@
 // Andrey 01/04/2021 17:39
+/*
+This class imports the data from the csv files for the dataset and the population csv
+It puts it into the empty database in the program
+*/
 import samuelal.squelized.*;
 
 class DbImport {
 public Table table;
+// Function to convert date format from dd/mm/yyyy to yyyy-mm-dd
 private String ConvertDate(String date){
   String result;
   String items[] = date.split("/",-1);
@@ -76,13 +81,14 @@ public void Run(SQLConnection myConnection){
   myConnection.updateQuery(createIndex);
 
  // Andrey 19/04/2021 00:40
+ // Creating new table for population data
   StringBuilder stringBuilder2 = new StringBuilder(16000);
   String dropPopTable = "DROP TABLE IF EXISTS popData";
   String createNewPopTable = "CREATE TABLE IF NOT EXISTS popData(geoid INTEGER NOT NULL, populationTotal REAL NOT NULL,stateid INTEGER NOT NULL);";
   
   myConnection.updateQuery(dropPopTable);
   myConnection.updateQuery(createNewPopTable);
-  
+  // parses the population data into arrays
    String[] lines2 = loadStrings("PopulationData.csv");
    String[] geoidPop = new String[lines2.length];
   String[] populationTotal = new String[lines2.length];
@@ -94,7 +100,7 @@ public void Run(SQLConnection myConnection){
    populationTotal[i] = splitString[1];
    stateIdPop[i] = splitString[2];
   }
-  
+  // Uses a stringbuilder to make queries more efficient
    stringBuilder2.append("INSERT INTO popData(geoid,populationTotal,stateid) VALUES");
   for (int k = 0; k<lines2.length; k++) {
     stringBuilder2.append("(");
@@ -111,8 +117,7 @@ public void Run(SQLConnection myConnection){
       stringBuilder2.append(",");
     }
   }
- // print(stringBuilder2.toString());
- // stringBuilder2.append(";");
+ 
   // Sends that query to database
   myConnection.updateQuery(stringBuilder2.toString());
   

@@ -1,4 +1,7 @@
 // Andrey 06/04/2021 16:06
+/*
+This class makes a text Widget which allows user input and has a cursor bar
+*/
 class TextWidget {
   int maxlen;
   int x;
@@ -10,7 +13,7 @@ class TextWidget {
   PFont font; 
   int event;
   boolean hasCursor;
-
+// Constructor
 
   TextWidget(int x, int y, int width, int height, String label, color widgetColor, int event, int maxlen, boolean hasCursor) {
     this.x=x; 
@@ -23,6 +26,7 @@ class TextWidget {
     this.maxlen=maxlen;
     this.hasCursor = hasCursor;
   }
+  // Controls input through keys
   void append(char s) {
     if (s==BACKSPACE) {
       if (!label.equals(""))
@@ -33,7 +37,7 @@ class TextWidget {
       }
       println(s);
   }
-
+// Draws the text Widgets
   void draw() {
     stroke(0);
     fill(widgetColor);
@@ -49,7 +53,7 @@ class TextWidget {
     stroke(0);
    
   }
-  
+  // Makes text Widgets interractable
   int getEvent(int mX, int mY)
   {
     if ((mX > x) && (mX < x+width) && (mY > y) && (mY < y+height))

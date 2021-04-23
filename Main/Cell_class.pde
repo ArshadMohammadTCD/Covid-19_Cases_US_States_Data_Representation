@@ -1,4 +1,7 @@
 //Andrey 06/04/2020
+/*
+This class creates cells which display information. These cells have x,y and widths and heights and different colors for presentation to allow them to be modifieable
+*/
 class Cell {
   //
   float x;  // pos 

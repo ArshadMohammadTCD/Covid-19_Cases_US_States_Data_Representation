@@ -154,34 +154,8 @@ class Screen {
   {
     buttonList.add(inputButton);
   }
-  // Andrey 06/04/2021 12:27 Checkboxes for table screen
-
-  void addCheckbox(Checkbox checkboxName) {
-    checkboxList.add(checkboxName);
-  }
-  void drawCheckbox() {
-    for (int i=0; i<checkboxList.size(); i++)
-    {
-      Checkbox currentCheckbox = (Checkbox) checkboxList.get(i);
-      currentCheckbox.draw();
-    }
-  }
-
-  int getCheckboxEvent(){
-    for (int i=0; i<checkboxList.size(); i++)
-    {
-      Checkbox currentcheckbox = (Checkbox) checkboxList.get(i);
-      event = currentcheckbox.getEvent(mouseX, mouseY);
-      if (event!=EVENT_NULL)
-      {
-        println(event);
-        return event;
-      }
-    }
-    println("NULL");
-    return EVENT_NULL;
-  }
-
+ 
+// Text Widget implementation
   void addTextWidget(TextWidget TextWidgetName) {
     textWidgetList.add(TextWidgetName);
   }

@@ -9,12 +9,8 @@ final int EVENT_TREE_MAP=7;//change name if using
 final int EVENT_FREE_4=8;//change name if using
 final int EVENT_BACK_TO_HOME=9;
 // Andrey 06/04/2021 20:00
-final int EVENT_CHECKBOX_0 = 10;
-final int EVENT_CHECKBOX_1 = 11;
-final int EVENT_CHECKBOX_2 = 12;
-final int EVENT_CHECKBOX_3 = 13;
-final int EVENT_CHECKBOX_4 = 14;
-final int EVENT_CHECKBOX_5 = 15;
+// Setting up buttons for table screens
+
 final int EVENT_UPDATE_TABLE = 16;
 
 final int EVENT_TEXTWIDGET_1 = 17;

@@ -1,4 +1,7 @@
 //Andrey 01/04/2021 17:39
+/*
+This class takes a query and puts the result in a table to be used.
+*/
 import samuelal.squelized.*;
 
 class DataSource {

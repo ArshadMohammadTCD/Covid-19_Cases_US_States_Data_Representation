@@ -1,4 +1,7 @@
 // Andrey 11/04/2021 15:30
+/*
+This class makes the TimeLine Cases Screen and all its elements
+*/
 import samuelal.squelized.*;
 class TimelineCasesScreen extends Screen {
   ArrayList gridList = new ArrayList();
@@ -24,7 +27,7 @@ class TimelineCasesScreen extends Screen {
     super(screenBackground);
     connection = myConnection;
     selected_event = EVENT_NULL;
-
+// Makes the textWidgets
 
     countyInput = new TextWidget(240, 450, 100, 30, " All counties", color(200), EVENT_TEXTWIDGET_2, 30, false);
     this.addTextWidget(countyInput);
@@ -40,14 +43,14 @@ class TimelineCasesScreen extends Screen {
 
     setupData(false);
   }
+  // Sets up the data for the tables
   void setupData(boolean refresh) {
     if (refresh) {
       gridList.remove(casesByState);
       gridList.remove(casesByArea);
       gridList.remove(casesTimeline);
     }
-//  String queryByState = "SELECT county, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid WHERE date <= '"+ ConvertDate(dateInput.label) + "' GROUP BY 1 ORDER BY 1 ASC";
-   // String queryByArea = "SELECT area, SUM(cases) AS cases,p.populationTotal as populationTotal FROM covidData c join popData p on c.geoid = p.geoid  WHERE date <= '"+ ConvertDate(dateInput.label) + "' and county = '"+countyInput.label+"' GROUP BY 1 ORDER BY 1 ASC";
+// Makes queries to the database for data
     String queryByState = "select ' All counties' as county UNION select  distinct county from covidData ORDER BY 1 ASC";
     String queryByArea;
     if (countyInput.label.equals(" All counties")) { 
@@ -58,7 +61,7 @@ class TimelineCasesScreen extends Screen {
     String queryTimeline;
     if(countyInput.label.equals(" All counties")){
       queryTimeline= "select date, SUM(cases) as cases,((SUM(cases)/SUM(p.populationTotal))*1000000) as casePerM FROM covidData c join popData p on c.geoid/1000 = p.stateid AND (p.geoid%1000 == 0) WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
-      //  queryTimeline= "select date, SUM(cases) as cases,p.populationTotal as population FROM covidData c join popData p on c.geoid = p.geoid WHERE date BETWEEN '"+ConvertDate(dateFrom.label)+"' AND '"+ConvertDate(dateTo.label)+"' GROUP BY DATE ORDER BY 1 DESC";
+     
     }
     else {
       if(areaInput.label.equals(" All areas")){
@@ -75,6 +78,7 @@ class TimelineCasesScreen extends Screen {
     if (connection == null) {
       println("connection null");
     }
+    // Creates the grids/tables
     casesByStateDs = new DataSource(connection, queryByState);
     casesByState = new Grid(casesByStateDs.table, 240, 520, 600, 400, EVENT_GRID_1);
     gridList.add(casesByState);
@@ -85,7 +89,7 @@ class TimelineCasesScreen extends Screen {
     casesTimeline = new Grid(casesTimelineDs.table, 1150, 300, 600, 600, EVENT_GRID_3);
     gridList.add(casesTimeline);
   }
-
+// Draws which one is currently selected
   void drawFocus() {
     switch(selected_event) {
     case EVENT_TEXTWIDGET_1:
@@ -115,7 +119,7 @@ class TimelineCasesScreen extends Screen {
   }
 
   void draw() {
-    
+    // Draws all the elements of the screen
     super.draw();
     drawFocus();
     textSize(14);    
@@ -133,7 +137,7 @@ class TimelineCasesScreen extends Screen {
       rect(currentGrid.topx-10, currentGrid.y-10, currentGrid.width+20, currentGrid.height+20);
       currentGrid.draw();
     }
-    
+    // Draws text and borders
     fill(237, 237, 237);
     textFont(largeFont);
     textSize(24);
@@ -152,7 +156,7 @@ class TimelineCasesScreen extends Screen {
     rect(100, 950, 950, 3);
      
   }
-
+// makes buttons/tables interractable
   int getEvent()
   {
     int event = super.getEvent();
@@ -183,7 +187,7 @@ class TimelineCasesScreen extends Screen {
 
     return EVENT_NULL;
   }
-
+// Decides which thing is pressed
   void processEvent(int event) {
 
     switch(event) {
@@ -204,7 +208,7 @@ class TimelineCasesScreen extends Screen {
       break;
     }
   }
-
+// Controls what happens when keys are pressed
   void processKey(int key_code, int key_pressed) {
     switch(selected_event) {
     case EVENT_TEXTWIDGET_1:      
