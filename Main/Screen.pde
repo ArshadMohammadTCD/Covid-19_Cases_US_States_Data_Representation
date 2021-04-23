@@ -1,7 +1,6 @@
 //Zemyna 23/03/2021 20:15 
 class Screen {
   ArrayList buttonList=new ArrayList();
-  ArrayList checkboxList = new ArrayList();
   ArrayList textWidgetList = new ArrayList();
   PImage screenBackground;
   int event;

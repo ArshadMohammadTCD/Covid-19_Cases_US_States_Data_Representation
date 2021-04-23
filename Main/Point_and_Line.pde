@@ -212,7 +212,7 @@ void drawLineChart() {
 }
 
 
-
+// finds the point with the highest value, so the other points will be drawn with respect to that one
 int findMaxValue(IntList firstCases, IntList secondCases ) {
   int maxValue = 0;
   for ( int i = 0; i < firstCases.size(); i++ ) {
@@ -236,6 +236,7 @@ int createTotalCases ( Table table ) {
   return totalCases;
 }
 
+// empties every part of the line chart, for a new chart to be created
 void emptyLineChart() {
   for ( int i = firstPoints.size() - 1; i >= 0; i-- ) {
     firstPoints.remove(i);
