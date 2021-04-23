@@ -1,5 +1,8 @@
 
 
+// 19/04/2021 Arshad
+// This is a parallel object array loop
+// what this holds is the actual state names of each rectangle for each date present
 
 class TreeMapData
   {

@@ -5,29 +5,26 @@ import java.util.ArrayList;
 PFont stdFont;
 Squarify[] treeMap;
 TreeMapData[] treeMapDataSet;
-// CONSTANTS
-float CANVAS_WIDTH = 1000;    // The width of the canvas to fill
-float CANVAS_HEIGHT = 1000;   // The height of the canvas to fill
-float CANVAS_ORIGIN_X = 0;    // The x origin of the canvas to fill
-float CANVAS_ORIGIN_Y = 0;    // The y origin of the canvas to fill
-int WORKING_DATES = 95;
-// Arshad 01/04/21 16:55
-final int NUMBER_OF_STATES = STATES.length;
 
-// These Are Setting For My Tree Map Feel Free to mess around with them and tell me if you find bugs!
+
+// Here I just initialise the key variables
 // Arshad 02/04/21 19:49
+final int NUMBER_OF_STATES = STATES.length;
 final int SIZE_OF_TREE_MAP = 10;       
 final int DAYS_SINCE_COVID = 365;
-final int SPEED_OF_DAY_CYCLE_IN_SECONDS = 10000;
+final int SPEED_OF_DAY_CYCLE_IN_SECONDS = 1;
 final int SPEED_OF_TREEMAP = 10;
+int WORKING_DATES = 95;
 int day = 1;
 boolean isPaused = true;
 
 // SQUARIFY DATA
 
 class TreeMap {
-  ArrayList<SquarifyRect> rects;  // The rects list will contain geometry for each rectangle to draw
-  // Arshad Changing the values to suit the situation Thu 25th March 13:24
+  // I just initialise the key replicated variables for each
+  // The rects list will contain geometry for each rectangle to draw
+  ArrayList<SquarifyRect> rects; 
+  // Arshad Thu 25th March 13:24
   float[] previousX, previousY, previousDx, previousDy;
   float[] caseNumber;
   String[] states;
@@ -42,16 +39,9 @@ class TreeMap {
   TreeMap()
   {
     // Arshad 02/04/21 Just Setting it up so that it works well with the data provided I have also altered the code so that it works in a OOP fashion
-
-    //Table topTen = myConnection.runQuery("SELECT  county, cases  FROM covidData WHERE date = 28/04/2020 ORDER BY  cases DESC LIMIT 10");
-    //sortCases(caseNumber, topTen);
-
-    //Button(int x, int y, int width, int height, String label, 
-    //color buttonColor, PFont buttonFont, int event, int labelx)
-
     //Initialise Floating Values to Data Set.
     smooth();
-
+    // initialising variables to be assigned for each object.
     caseNumber = new float[SIZE_OF_TREE_MAP];
     treeMap = new Squarify[WORKING_DATES];
     treeMapDataSet = new TreeMapData[WORKING_DATES];
@@ -60,21 +50,13 @@ class TreeMap {
     previousDx = new float[NUMBER_OF_STATES];
     previousDy = new float[NUMBER_OF_STATES];
     states = new String[10];
-    //String query = "SELECT county,SUM(cases) AS cases FROM covidData WHERE  date = '2020-03-01' GROUP BY 1 ORDER BY cases DESC";
-    ////String query = "SELECT county,SUM(cases) AS cases FROM covidData GROUP BY 1 ORDER BY cases DESC";
-    //DataSource arshadsData = new DataSource(myConnection, query);
-    //sortCases(caseNumber, states, arshadsData.table);
 
+    // Passing in Parameters into the recursive constructor in the library. (It takes in as many caseNumbers as specified)
     values = new ArrayList<Float>(Arrays.asList(caseNumber[0], caseNumber[1], caseNumber[2], caseNumber[3], caseNumber[4], caseNumber[5], caseNumber[6], caseNumber[7], caseNumber[8], caseNumber[9] )); // Values defining the squarified layout
     init_treeMap(treeMap, treeMapDataSet);
   }
-
-
-  //s[0] = new Squarify(values, CANVAS_ORIGIN_X, CANVAS_ORIGIN_Y, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-
   void draw() {
-    
+    // Code for the border.
     // Zemyna's border copy pasted
     stroke(57, 57, 57);
     fill(193, 193, 193);
@@ -84,31 +66,24 @@ class TreeMap {
     rect(250, 210, 1280, 769);
     tint(255, 255, 255);
 
-    //stroke(0, 0, 0);
-    //fill(100);
-    //rect(130, 70, 1660, 940);
 
     //This is timing system I built - Arshad Thu 25th March 17:45
-
+   
     time++;
     if (day < WORKING_DATES) {
       if (time%(SPEED_OF_DAY_CYCLE_IN_SECONDS*50) == 0 && day < WORKING_DATES-1 && isPaused == false) {
         day++; 
-        nextDay();
-      }
+       }
     }
 
     x = 1530;
     y = 979;
     rects = treeMap[day].getRects();
     for (int i = 0; i < rects.size(); i++) {
-      // Draw a rectangle
 
+      
       // Arshad I made this work around and move the rectangles around Thu 25th March 17:30
       SquarifyRect r = rects.get(i);
-      float hashColorR = (256-(map(r.getValue(), 0, 100000, 38, 223)));
-      float hashColorG = (256-(map(r.getValue(), 0, 100000, 30, 230)));
-      float hashColorB = (256-(map(r.getValue(), 0, 100000, 30, 230)));
       if (r.getValue() == 0) {
         noStroke();
       } else {
@@ -228,7 +203,7 @@ class TreeMap {
     }
     noStroke();
 
-
+    // 17/04/2021 - Arshad
     stroke(57, 57, 57);
     textFont(header);
     fill(193, 193, 193);
@@ -242,11 +217,8 @@ class TreeMap {
     rect(70, 200, 170, 789);
     fill(107, 108, 147);
     rect(80, 210, 150, 769);
-    //keys
-    // Key Builder
-    //
 
-
+    // 17/04/2021 - Arshad
     stroke(57, 57, 57);
     fill(242, 229, 255);
     rect(90, 220, 130, 30);
@@ -272,6 +244,7 @@ class TreeMap {
     rect(90, 920, 130, 30);
     fill(193, 193, 193);
     textSize(18);
+        // 17/04/2021 - Arshad
     text("0+", 140, 270);
     text("5+", 140, 340);
     text("10+", 135, 410);
@@ -294,6 +267,7 @@ class TreeMap {
     fill(237, 237, 237);
     textSize(36);
 
+    // 17/04/2021 - Arshad
     text("DATE " + treeMapDataSet[day].date, 1570, 260);
     fill(237, 237, 237);
     rect(1570, 270, 250, 3);
@@ -307,7 +281,9 @@ class TreeMap {
     rect(1570, 490, 250, 3);
     
     
-    // Buttons
+    
+        // 20/04/2021 - Arshad
+    // The buttons below are actually an overlay. So imagine rectangles on top of another pre-existing button which highlight when hovered
     if (mouseX > 1570 && mouseX < 1570+250 && mouseY > 510 && mouseY < 510 + 50 )
     {
       fill(128, 81, 175);
@@ -324,7 +300,7 @@ class TreeMap {
       fill(128, 81, 175);
     }
     
-    rect(1570, 590, 250, 50);
+    rect(1570, 590, 250, 50); // Next day button
     fill(0);
     text("Next Day",1570+ 250/2, 590+50/2); 
     
@@ -334,7 +310,7 @@ class TreeMap {
       fill(128, 81, 175);
     }
    
-    rect(1570, 670, 250, 50); 
+    rect(1570, 670, 250, 50); // Previous Day Button
     fill(0);
     text("Previous Day",1570+ 250/2, 670+50/2);
     
@@ -344,7 +320,7 @@ class TreeMap {
       fill(128, 81, 175);
     }
     
-    rect(1570, 750, 250, 50);
+    rect(1570, 750, 250, 50); // Next Week Button
     fill(0);
     text("Next Week",1570+ 250/2, 750+50/2); 
     fill(255); // without highlight color
@@ -354,7 +330,7 @@ class TreeMap {
       fill(128, 81, 175);
     }
     
-    rect(1570, 830, 250, 50);
+    rect(1570, 830, 250, 50); // Previous Week button
     fill(0);
     text("Previous Week",1570+ 250/2, 830+50/2); 
     fill(255); // without highlight color
@@ -365,12 +341,11 @@ class TreeMap {
   }
 
 
-  // Added mousePressed funtion to increase the Day count)
-
-
-
-
   // Arshad initializing treeMap Thu 25th March 13:24
+  // So What this does is that it loops through for every date making a new SQL Query which fetches data into the table
+  // I then use loops to assign those data into Arrays and
+  // whilst looping I assign data into parallel object arrays. 
+  // This is so I can call back to the data later in the draw function
   void init_treeMap(Squarify theArray[], TreeMapData theData[])
   {
     String date = "";
@@ -416,9 +391,6 @@ class TreeMap {
       theArray[i] = new Squarify(values, 250, 210, 1280, 769);
       theData[i] = new TreeMapData(stateNames, date);
     }
-  }
-  void nextDay() {
-    currentTreeMap++;
   }
 
 
